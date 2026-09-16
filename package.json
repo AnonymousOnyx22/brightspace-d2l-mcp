@@ -1,0 +1,104 @@
+{
+  "name": "brightspace-d2l-mcp",
+  "version": "1.0.0",
+  "mcpName": "io.github.AnonymousOnyx22/brightspace-d2l-mcp",
+  "description": "MCP server for D2L Brightspace: connect Brightspace to Claude, ChatGPT, Cursor, Copilot and any AI agent. One-command setup at any school with normal browser sign-in (SSO, Duo, MFA). Due dates with real submission status, grades, assignments, content, announcements.",
+  "type": "module",
+  "main": "build/index.js",
+  "bin": {
+    "brightspace-d2l-mcp": "build/index.js"
+  },
+  "files": [
+    "build",
+    "!build/**/*.map",
+    "!build/**/*.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node build/index.js",
+    "setup": "node build/index.js setup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "file-type": "^21.3.0",
+    "playwright-core": "^1.63.0",
+    "sanitize-filename": "^1.6.3",
+    "turndown": "^7.2.2",
+    "unpdf": "^1.4.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/turndown": "^5.0.6",
+    "typescript": "^5.9.0",
+    "vitest": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "license": "MIT",
+  "author": "AnonymousOnyx22",
+  "homepage": "https://github.com/AnonymousOnyx22/brightspace-d2l-mcp#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnonymousOnyx22/brightspace-d2l-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AnonymousOnyx22/brightspace-d2l-mcp/issues"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "brightspace",
+    "d2l",
+    "desire2learn",
+    "d2l-brightspace",
+    "brightspace-api",
+    "d2l-api",
+    "valence",
+    "lms",
+    "learning-management-system",
+    "student",
+    "students",
+    "education",
+    "edtech",
+    "university",
+    "college",
+    "ai-agent",
+    "agent",
+    "claude",
+    "claude-desktop",
+    "claude-code",
+    "chatgpt",
+    "cursor",
+    "copilot",
+    "windsurf",
+    "llm",
+    "assignments",
+    "grades",
+    "due-dates",
+    "homework",
+    "sso",
+    "brightspace-mcp",
+    "d2l-mcp",
+    "brightspace-ai",
+    "d2l-ai",
+    "desire2learn-api",
+    "gemini",
+    "github-copilot",
+    "vscode",
+    "ai-assistant",
+    "study",
+    "school",
+    "course-content",
+    "announcements",
+    "rubrics"
+  ]
+}
