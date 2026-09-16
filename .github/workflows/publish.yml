@@ -1,0 +1,45 @@
+name: publish
+
+# Publishes to npm when a GitHub release is published.
+# Uses npm trusted publishing (OIDC), so no npm token is stored in the repo.
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: npm
+      - name: Check release tag matches package.json version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version="$(node -p "require('./package.json').version")"
+          if [ "$tag" != "$version" ]; then
+            echo "Release tag $GITHUB_REF_NAME does not match package.json version $version"
+            exit 1
+          fi
+      - name: Skip if this version is already on npm
+        id: check
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          if npm view "brightspace-d2l-mcp@$version" version >/dev/null 2>&1; then
+            echo "brightspace-d2l-mcp@$version is already published, skipping"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.check.outputs.skip != 'true'
+        run: npm install -g npm@latest
+      - if: steps.check.outputs.skip != 'true'
+        run: npm ci
+      - if: steps.check.outputs.skip != 'true'
+        run: npm publish
