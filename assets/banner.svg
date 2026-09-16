@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="440" viewBox="0 0 1280 440" role="img" aria-label="Brightspace Student MCP: ask your AI what's due, with real submission status">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#16213f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.82" cy="0.2" r="0.6">
+      <stop offset="0" stop-color="#ff7a45" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#ff7a45" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffb05c"/>
+      <stop offset="1" stop-color="#ff6a3d"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="440" rx="24" fill="url(#bg)"/>
+  <rect width="1280" height="440" rx="24" fill="url(#glow)"/>
+  <g stroke="#ffffff" stroke-opacity="0.04">
+    <path d="M0 110H1280M0 220H1280M0 330H1280M160 0V440M320 0V440M480 0V440M640 0V440M800 0V440M960 0V440M1120 0V440"/>
+  </g>
+
+  <g font-family="-apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif">
+    <rect x="72" y="84" width="148" height="30" rx="15" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-opacity="0.14"/>
+    <circle cx="92" cy="99" r="5" fill="#3ddc97"/>
+    <text x="106" y="104" font-size="14" fill="#cfd6ea" font-weight="600">MCP server</text>
+
+    <text x="72" y="172" font-size="54" font-weight="800" fill="#ffffff" letter-spacing="-1">Brightspace</text>
+    <text x="72" y="232" font-size="54" font-weight="800" fill="url(#accent)" letter-spacing="-1">for your AI</text>
+
+    <text x="72" y="284" font-size="20" fill="#aab3cc">Ask Claude, Cursor or Copilot what's due, what you've</text>
+    <text x="72" y="312" font-size="20" fill="#aab3cc">already handed in, your grades and course files.</text>
+
+    <rect x="72" y="344" width="392" height="44" rx="10" fill="#0a0e1a" stroke="#ffffff" stroke-opacity="0.12"/>
+    <text x="92" y="372" font-family="'Cascadia Code', 'SF Mono', Menlo, Consolas, monospace" font-size="16" fill="#8b93ad">$</text>
+    <text x="110" y="372" font-family="'Cascadia Code', 'SF Mono', Menlo, Consolas, monospace" font-size="16" fill="#e8ecf7">npx brightspace-d2l-mcp setup</text>
+  </g>
+
+  <g filter="url(#shadow)" font-family="-apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif">
+    <rect x="620" y="56" width="588" height="328" rx="18" fill="#121a31" stroke="#ffffff" stroke-opacity="0.1"/>
+    <circle cx="646" cy="82" r="6" fill="#ff5f57"/>
+    <circle cx="666" cy="82" r="6" fill="#febc2e"/>
+    <circle cx="686" cy="82" r="6" fill="#28c840"/>
+
+    <rect x="840" y="108" width="344" height="42" rx="21" fill="url(#accent)"/>
+    <text x="1012" y="135" font-size="16" fill="#1a1206" font-weight="600" text-anchor="middle">What should I work on right now?</text>
+
+    <text x="648" y="184" font-size="15" fill="#8b93ad">Here's what's left this week:</text>
+
+    <rect x="644" y="198" width="540" height="46" rx="10" fill="#ff6a3d" fill-opacity="0.12" stroke="#ff6a3d" stroke-opacity="0.35"/>
+    <text x="664" y="227" font-size="16" fill="#ffb49a" font-weight="700">DO NOW</text>
+    <text x="746" y="227" font-size="16" fill="#e8ecf7">Problem Set 3 · Calculus I</text>
+    <text x="1168" y="227" font-size="14" fill="#aab3cc" text-anchor="end">due Mon 11:59 PM</text>
+
+    <rect x="644" y="254" width="540" height="46" rx="10" fill="#ffffff" fill-opacity="0.04" stroke="#ffffff" stroke-opacity="0.1"/>
+    <text x="664" y="283" font-size="16" fill="#9fb4ff" font-weight="700">OPENS</text>
+    <text x="746" y="283" font-size="16" fill="#e8ecf7">Lab 2 · Intro Chemistry</text>
+    <text x="1168" y="283" font-size="14" fill="#aab3cc" text-anchor="end">today 5:00 PM</text>
+
+    <rect x="644" y="310" width="540" height="46" rx="10" fill="#3ddc97" fill-opacity="0.08" stroke="#3ddc97" stroke-opacity="0.3"/>
+    <text x="664" y="339" font-size="16" fill="#7eeabf" font-weight="700">DONE ✓</text>
+    <text x="746" y="339" font-size="16" fill="#aab3cc" text-decoration="line-through">Essay Draft · English 101</text>
+    <text x="1168" y="339" font-size="14" fill="#7eeabf" text-anchor="end">submitted Sep 15</text>
+  </g>
+</svg>
