@@ -152,6 +152,33 @@ export class D2LApiClient {
     return this.withAuthentication(resolved, token => this.makeRawRequest(resolved, token));
   }
 
+  /**
+   * POST/PUT/DELETE. Carries the XSRF token, which every D2L write requires and
+   * which only exists when the session was captured from a browser.
+   *
+   * Never retried automatically. A retry after an ambiguous failure could put the
+   * same work into Brightspace twice, which matters far more here than saving a
+   * round trip: callers decide whether a failure is safe to repeat.
+   */
+  async write<T>(
+    method: "POST" | "PUT" | "DELETE",
+    path: string,
+    init: { body?: BodyInit; headers?: Record<string, string> } = {},
+  ): Promise<T> {
+    const resolved = await this.resolvePath(path);
+    return this.withAuthentication(resolved, token =>
+      this.throttled(() => this.makeWriteRequest(resolved, token, method, init)),
+    ) as Promise<T>;
+  }
+
+  post<T>(path: string, init?: { body?: BodyInit; headers?: Record<string, string> }): Promise<T> {
+    return this.write<T>("POST", path, init);
+  }
+
+  put<T>(path: string, init?: { body?: BodyInit; headers?: Record<string, string> }): Promise<T> {
+    return this.write<T>("PUT", path, init);
+  }
+
   private async withAuthentication<T>(path: string, request: (token: TokenData) => Promise<T>): Promise<T> {
     let token = await this.tokenManager.getToken();
     let authenticated = false;
@@ -370,6 +397,64 @@ export class D2LApiClient {
       }
 
       // Wrap network/fetch errors
+      const message = error instanceof Error ? error.message : String(error);
+      throw new NetworkError(
+        `Request to ${path} failed: ${message}`,
+        error instanceof Error ? error : undefined,
+      );
+    }
+  }
+
+  private async makeWriteRequest(
+    path: string,
+    token: TokenData,
+    method: "POST" | "PUT" | "DELETE",
+    init: { body?: BodyInit; headers?: Record<string, string> },
+  ): Promise<unknown> {
+    const url = `${this.baseUrl}${path}`;
+    const headers = this.buildAuthHeaders(token);
+    // D2L rejects any write without the XSRF token that came from the browser session.
+    if (token.csrfToken) headers["X-XSRF-TOKEN"] = token.csrfToken;
+    for (const [key, value] of Object.entries(init.headers ?? {})) headers[key] = value;
+
+    try {
+      log("DEBUG", `Requesting ${method} ${path}`);
+
+      const response = await fetch(url, {
+        method,
+        headers,
+        body: init.body,
+        signal: AbortSignal.timeout(this.timeoutMs),
+      });
+
+      if (response.status === 401) {
+        throw new ApiError(401, path, "Brightspace rejected the access token.");
+      }
+      if (response.status === 429) {
+        const retryAfter = response.headers.get("Retry-After");
+        throw new RateLimitError(path, retryAfter ? parseInt(retryAfter, 10) : undefined);
+      }
+      if (!response.ok) {
+        throw new ApiError(response.status, path, await response.text());
+      }
+
+      // Writes often answer with an empty or non-JSON body; only pass through
+      // something that actually parses so callers never see a stray throw.
+      const body = await response.text();
+      if (!body.trim()) return undefined;
+      try {
+        return JSON.parse(body);
+      } catch {
+        return undefined;
+      }
+    } catch (error) {
+      if (
+        error instanceof ApiError ||
+        error instanceof RateLimitError ||
+        error instanceof NetworkError
+      ) {
+        throw error;
+      }
       const message = error instanceof Error ? error.message : String(error);
       throw new NetworkError(
         `Request to ${path} failed: ${message}`,
