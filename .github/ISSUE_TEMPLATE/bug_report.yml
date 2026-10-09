@@ -1,0 +1,29 @@
+name: Bug report
+description: Something is not working
+labels: [bug]
+body:
+  - type: input
+    id: school
+    attributes:
+      label: Your school and Brightspace address
+      placeholder: learn.example.edu
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Output of `npx brightspace-d2l-mcp@latest doctor`
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: app
+    attributes:
+      label: AI app you use
+      placeholder: Claude Desktop, Cursor, ChatGPT...
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened and what did you expect
+    validations:
+      required: true

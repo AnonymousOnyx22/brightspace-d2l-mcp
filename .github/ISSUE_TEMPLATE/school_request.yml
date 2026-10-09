@@ -1,0 +1,21 @@
+name: My school does not work
+description: Sign-in fails or a tool returns the wrong thing at your school
+labels: [school]
+body:
+  - type: input
+    id: school
+    attributes:
+      label: School name and Brightspace address
+    validations:
+      required: true
+  - type: dropdown
+    id: sso
+    attributes:
+      label: How do you sign in
+      options: [Microsoft, Google, Duo, Okta, Shibboleth, Username and password only, Not sure]
+  - type: textarea
+    id: details
+    attributes:
+      label: What happens when you try
+    validations:
+      required: true

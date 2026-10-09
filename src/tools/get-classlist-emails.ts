@@ -24,7 +24,8 @@ export function registerGetClasslistEmails(
       description:
         "Fetch all email addresses for everyone in a course: instructors, TAs, and students. " +
         "Use this when the user wants a list of emails for a class, needs to email the whole class, " +
-        "or wants contact info for everyone enrolled.",
+        "or wants contact info for everyone enrolled. Returns emails only, with no names or roles. " +
+        "For names, roles or finding a specific instructor or TA, use get_roster instead.",
       inputSchema: GetClasslistEmailsSchema,
     },
     async (args: any) => {
