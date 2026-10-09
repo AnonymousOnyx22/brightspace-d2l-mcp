@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const CLI_COMMANDS = new Set(["setup", "login", "status", "logout", "uninstall", "serve", "config", "help", "--help", "-h", "--version", "-v"]);
+const CLI_COMMANDS = new Set(["setup", "login", "status", "doctor", "logout", "uninstall", "serve", "config", "help", "--help", "-h", "--version", "-v"]);
 const command = process.argv[2];
 
 if (command && CLI_COMMANDS.has(command)) {

@@ -1,6 +1,6 @@
 {
   "name": "brightspace-d2l-mcp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "mcpName": "io.github.AnonymousOnyx22/brightspace-d2l-mcp",
   "description": "MCP server for D2L Brightspace: connect Brightspace to Claude, ChatGPT, Cursor, Copilot and any AI agent. One-command setup at any school with normal browser sign-in (SSO, Duo, MFA). Due dates with real submission status, grades, assignments, content, announcements.",
   "type": "module",

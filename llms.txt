@@ -47,6 +47,7 @@ Submission status values are submitted, graded, not_submitted, draft, not_open_y
 
 - npx brightspace-d2l-mcp login signs in again
 - npx brightspace-d2l-mcp status shows the school, sign-in state and connected apps
+- npx brightspace-d2l-mcp doctor checks Node, the school, sign-in and connected apps and says how to fix problems. Run this first when something is not working
 - npx brightspace-d2l-mcp logout deletes the saved session
 - npx brightspace-d2l-mcp uninstall removes it from all AI apps and deletes all local data
 
