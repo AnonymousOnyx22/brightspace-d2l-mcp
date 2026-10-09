@@ -1,0 +1,68 @@
+# Brightspace D2L MCP Server
+
+> MCP server that gives AI assistants and agents read access to D2L Brightspace. It returns due dates with real submission status, grades, assignments, rubrics, course content, announcements, discussions and class lists. It works at any school that uses D2L Brightspace, including schools with Microsoft, Duo, Okta or Shibboleth sign-in. It is read only and never stores a password.
+
+## Install
+
+Requirements are Node.js 20 or newer and Google Chrome or Microsoft Edge.
+
+Run this command in a terminal. It opens a browser window so the user can sign in, so do not run it silently in the background.
+
+npx brightspace-d2l-mcp setup
+
+Setup asks for the school, opens a normal browser window where the user signs in the way they always do, and connects every supported AI app it finds. Afterwards restart the AI app.
+
+Useful options
+
+- npx brightspace-d2l-mcp setup --school yourschool.brightspace.com skips the school question
+- npx brightspace-d2l-mcp setup --apps claude-desktop,cursor only connects those apps
+- npx brightspace-d2l-mcp setup --skip-login signs in later on first use
+- npx brightspace-d2l-mcp setup --yes accepts every default
+
+App ids are claude-desktop, claude-code, cursor, vscode, windsurf, codex, gemini-cli, cline, roo-code, opencode, zed, lm-studio and kiro.
+
+For any other app run npx brightspace-d2l-mcp config to print the MCP config JSON, or launch the server over stdio with npx -y brightspace-d2l-mcp@latest. For ChatGPT and hosted agents run npx brightspace-d2l-mcp serve --http.
+
+## Tools
+
+13 read only MCP tools.
+
+- get_todo gives a prioritized to-do list across every course with what is due soon, overdue, not open yet and already done
+- get_upcoming_due_dates gives upcoming deadlines with the real submission status of each assignment
+- get_my_courses lists enrolled courses with names, codes and ids
+- get_my_grades gives the grade breakdown per course with points, percentages and instructor comments
+- get_assignments lists assignments and quizzes with due dates, status and rubrics
+- get_assignment_files reads the instructions, handouts and rubric files attached to an assignment
+- get_course_content lists course modules, lecture slides, files and links
+- get_syllabus returns the course syllabus and overview
+- get_announcements returns recent announcements from instructors
+- get_discussions returns discussion forums, topics and posts
+- get_roster lists instructors and TAs with contact info and optionally the full class list
+- get_classlist_emails returns email addresses for everyone in a course
+- download_file saves a course file or submission to a folder the user chooses
+
+Submission status values are submitted, graded, not_submitted, draft, not_open_yet, closed, past_due and unknown. Items that are submitted or graded are done and should never be suggested as a to-do. Quizzes can show unknown because Brightspace does not show students their quiz attempts, so ask the user.
+
+## Other commands
+
+- npx brightspace-d2l-mcp login signs in again
+- npx brightspace-d2l-mcp status shows the school, sign-in state and connected apps
+- npx brightspace-d2l-mcp logout deletes the saved session
+- npx brightspace-d2l-mcp uninstall removes it from all AI apps and deletes all local data
+
+## Privacy
+
+The password is never seen or stored because the user types it into the school's own sign-in page in a real browser. The server is read only and cannot submit, post or change anything. Everything runs locally and talks only to the school's Brightspace with no server in between and no analytics. The session is saved in the .brightspace-d2l-mcp folder in the user home directory.
+
+## Troubleshooting
+
+- If no supported browser is found, install Google Chrome or use Microsoft Edge, or run npx playwright install chromium
+- If the school address is not accepted, copy the address from the browser address bar while signed in to Brightspace
+- If it keeps asking to sign in, run npx brightspace-d2l-mcp status and then npx brightspace-d2l-mcp login
+- To hide old courses add course ids to excludeCourses in config.json in the .brightspace-d2l-mcp folder
+
+## Links
+
+- Repository https://github.com/AnonymousOnyx22/brightspace-d2l-mcp
+- npm https://www.npmjs.com/package/brightspace-d2l-mcp
+- Agent setup guides https://github.com/AnonymousOnyx22/brightspace-d2l-mcp/blob/main/docs/agents.md
