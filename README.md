@@ -11,7 +11,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-9fb4ff?style=flat-square&labelColor=1b2033" alt="MIT license"></a>
 </p>
 
-<h3 align="center">Connect D2L Brightspace to Claude, ChatGPT, Cursor, Copilot<br>or any AI agent in about a minute.</h3>
+<h3 align="center">Connect D2L Brightspace to Claude, ChatGPT, Cursor and Copilot.<br>It knows what you already handed in, so it only shows what is actually left.</h3>
 
 <p align="center">One command. Sign in the way you always do. No passwords stored.</p>
 
