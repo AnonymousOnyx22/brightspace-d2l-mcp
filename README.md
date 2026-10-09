@@ -6,6 +6,7 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/brightspace-d2l-mcp"><img src="https://img.shields.io/npm/v/brightspace-d2l-mcp?style=flat-square&label=npm&labelColor=1b2033&color=ff6a3d" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/brightspace-d2l-mcp"><img src="https://img.shields.io/npm/dm/brightspace-d2l-mcp?style=flat-square&label=downloads&labelColor=1b2033&color=ff6a3d" alt="npm downloads per month"></a>
   <a href="https://github.com/AnonymousOnyx22/brightspace-d2l-mcp/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/AnonymousOnyx22/brightspace-d2l-mcp/ci.yml?style=flat-square&label=tests&labelColor=1b2033" alt="tests"></a>
   <img src="https://img.shields.io/badge/node-20%2B-3ddc97?style=flat-square&labelColor=1b2033" alt="Node 20+">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-9fb4ff?style=flat-square&labelColor=1b2033" alt="MIT license"></a>
@@ -136,6 +137,7 @@ https://github.com/AnonymousOnyx22/brightspace-d2l-mcp/blob/main/llms.txt
 | `npx brightspace-d2l-mcp setup` | Pick your school, sign in, connect your AI apps |
 | `npx brightspace-d2l-mcp login` | Sign in again |
 | `npx brightspace-d2l-mcp status` | Show your school, whether you're signed in, and connected apps |
+| `npx brightspace-d2l-mcp doctor` | Check Node, your school, sign-in and connected apps, and say how to fix anything wrong |
 | `npx brightspace-d2l-mcp logout` | Delete the saved session |
 | `npx brightspace-d2l-mcp uninstall` | Remove from all AI apps and delete all local data |
 | `npx brightspace-d2l-mcp serve --http` | Run over HTTP for ChatGPT and HTTP-based agents |
@@ -190,7 +192,7 @@ Claude Desktop rewrites its settings while it's open, so setup offers to restart
 <summary><b>It keeps asking me to sign in</b></summary>
 
 Some schools end sessions every few hours. When that happens a browser window opens so you can sign in again.
-Run `npx brightspace-d2l-mcp status` to check, or `login` to sign in right away.
+Run `npx brightspace-d2l-mcp doctor` to find out what is wrong, `status` for a quick look, or `login` to sign in right away.
 If you'd rather it never opens a window on its own, add `"autoLogin": false` to `~/.brightspace-d2l-mcp/config.json`.
 </details>
 

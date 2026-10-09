@@ -5,6 +5,7 @@ import { packageVersion } from "../utils/version.js";
 import { loginWithBrowser, LoginError, SessionStore, TokenManager } from "../auth/index.js";
 import { APP_IDS, detectClients, isConfiguredIn, removeFromClient, serverEntry } from "./clients.js";
 import { runSetup, printManualConfig } from "./setup.js";
+import { runDoctor } from "./doctor.js";
 import * as ui from "./ui.js";
 
 function flagValue(args: string[], name: string): string | undefined {
@@ -27,6 +28,8 @@ export async function runCli(command: string, args: string[]): Promise<number> {
       return login();
     case "status":
       return status();
+    case "doctor":
+      return runDoctor();
     case "logout":
       await new SessionStore().clear();
       fs.rmSync(browserProfileDir(), { recursive: true, force: true });
@@ -146,6 +149,7 @@ ${ui.bold("brightspace-d2l-mcp")} ${ui.dim(`v${packageVersion()}`)}  Brightspace
   ${ui.cyan("setup")}       Pick your school, sign in, and connect your AI apps
   ${ui.cyan("login")}       Sign in again
   ${ui.cyan("status")}      Show your school, session and connected apps
+  ${ui.cyan("doctor")}      Check Node, your school, sign-in and AI apps, and say how to fix problems
   ${ui.cyan("logout")}      Delete the saved session
   ${ui.cyan("uninstall")}   Remove from AI apps and delete all local data
   ${ui.cyan("serve")}       Run the MCP server over stdio (what AI apps launch)
