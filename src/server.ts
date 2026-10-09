@@ -24,7 +24,10 @@ import {
   registerGetSyllabus,
   registerGetDiscussions,
   registerGetTodo,
+  registerGetGradeOutlook,
+  registerExportDueDatesCalendar,
 } from "./tools/index.js";
+import { registerPrompts } from "./prompts.js";
 
 function notConfiguredClient(client: D2LApiClient): D2LApiClient {
   return new Proxy(client, {
@@ -99,6 +102,9 @@ function createMcpServer({ config, apiClient }: Backend): McpServer {
   registerGetRoster(server, apiClient);
   registerGetSyllabus(server, apiClient);
   registerGetDiscussions(server, apiClient);
+  registerGetGradeOutlook(server, apiClient);
+  registerExportDueDatesCalendar(server, apiClient, config);
+  registerPrompts(server);
   return server;
 }
 

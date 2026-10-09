@@ -53,6 +53,8 @@ New to this? The **[step-by-step setup guide](docs/setup.md)** walks through eve
 | 📎 **Assignment files** | "What does the rubric for the project ask for?" |
 | 💬 **Discussions** | "What are people saying in the final project thread?" |
 | 👥 **Class list** | "Who's the TA for my networking course?" |
+| 🎯 **Target grade** | "What do I need on the final to get an 80?" · "Can I still pass?" |
+| 🗓️ **Calendar** | "Put my deadlines in my calendar" |
 
 ### It knows what you've already handed in
 
@@ -69,7 +71,7 @@ This one checks your actual submission for every assignment:
 
 ## Tools
 
-13 read-only MCP tools for D2L Brightspace:
+15 MCP tools for D2L Brightspace. Everything reads from Brightspace and nothing is ever changed there:
 
 | Tool | What it does |
 |---|---|
@@ -86,6 +88,13 @@ This one checks your actual submission for every assignment:
 | `get_roster` | Instructors and TAs with contact info, optionally the full class list |
 | `get_classlist_emails` | Email addresses for everyone in a course |
 | `download_file` | Saves a course file or submission to a folder you choose |
+| `get_grade_outlook` | Where you stand in a course and what you need on the remaining work to hit a target grade |
+| `export_due_dates_calendar` | Builds a calendar file (.ics) of your unfinished deadlines for Google Calendar, Apple Calendar and Outlook |
+
+### Built-in prompts
+
+Apps that support MCP prompts show these as one-click shortcuts or slash commands:
+`what_should_i_do_now` · `plan_my_week` · `weekly_digest` · `grade_target` · `exam_prep` · `summarize_assignment` · `put_deadlines_in_my_calendar`
 
 ## Works at any Brightspace school
 
@@ -250,6 +259,18 @@ No. Brightspace API keys normally require an administrator. This uses your own s
 <summary><b>Does it work with Duo, Microsoft Authenticator or text-message codes?</b></summary>
 
 Yes. You sign in yourself in a real browser window, so any sign-in method your school uses works.
+</details>
+
+<details>
+<summary><b>Can it tell me what I need on my final to reach a grade?</b></summary>
+
+Yes. Ask "what do I need on the final to get an 80 in Calculus?" and `get_grade_outlook` uses the weights Brightspace reports to give your current percentage, your best and worst possible final grade, and the average you need on everything left.
+</details>
+
+<details>
+<summary><b>Can I get my Brightspace due dates in Google Calendar, Apple Calendar or Outlook?</b></summary>
+
+Yes. Ask your AI to put your deadlines in your calendar. `export_due_dates_calendar` makes an .ics file with a link back to Brightspace and a one day reminder on each event, and only includes work you have not handed in.
 </details>
 
 <details>

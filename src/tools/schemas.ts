@@ -105,3 +105,21 @@ export const GetRosterSchema = z.object({
   limit: z.coerce.number().int().positive().max(1000).default(100)
     .describe("Maximum users to return. Default 100. The response reports the true total and whether it was truncated."),
 });
+
+export const GetGradeOutlookSchema = z.object({
+  courseId: z.coerce.number().int().positive()
+    .describe("Course ID to analyze."),
+  targetPercent: z.coerce.number().min(0).max(100).optional()
+    .describe("The final grade the user wants, as a percentage (for example 80). Omit to just get the current standing and best/worst case."),
+  totalWeight: z.coerce.number().positive().max(1000).default(100)
+    .describe("Total weight of the course. Almost always 100."),
+});
+
+export const ExportDueDatesCalendarSchema = z.object({
+  daysAhead: z.coerce.number().int().min(1).max(120).default(30).describe("How many days ahead to include"),
+  courseId: z.coerce.number().int().positive().optional().describe("Only include this course"),
+  includeSubmitted: z.boolean().default(false)
+    .describe("Also include work that is already submitted or graded. Default is only work still left to do."),
+  downloadPath: z.string().min(1).optional()
+    .describe("Absolute path to a directory. When given, the .ics file is saved there instead of returned as text."),
+});
