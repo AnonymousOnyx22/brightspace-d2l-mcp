@@ -15,6 +15,8 @@
 
 <p align="center">One command. Sign in the way you always do. No passwords stored.</p>
 
+<p align="center">By Nick, a networking student at Fleming College</p>
+
 <br>
 
 An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that gives AI assistants and agents read access to your Brightspace courses: due dates with real submission status, grades, assignments, rubrics, course content, announcements, discussions and class lists. It works at any school that uses D2L Brightspace, including schools with Microsoft, Duo, Okta or Shibboleth single sign-on.
@@ -95,6 +97,15 @@ Instead of guessing how your school works, setup opens a **normal browser window
 
 After that it stays signed in quietly in the background. If your school ever asks you to sign in again, the browser window simply pops up and closes by itself when you're done.
 
+## Does my school work?
+
+If your school uses D2L Brightspace, yes. Setup opens a normal browser window so any sign-in works, including Microsoft, Duo, Okta and Shibboleth.
+
+| School | Status |
+|---|---|
+| Fleming College | Tested by the author |
+| Any other D2L school | Should work. Open an issue with yours and I will add it here |
+
 ## Works with your AI app or agent
 
 **Connected automatically by setup:**
@@ -108,6 +119,15 @@ OpenAI Agents SDK · Claude Agent SDK · LangChain / LangGraph · Vercel AI SDK 
 
 It runs over **stdio** for local apps and **streamable HTTP** (`serve --http`) for ChatGPT and hosted agents.
 See **[docs/agents.md](docs/agents.md)** for copy-paste setup for every one of these.
+
+## Install it with your AI
+
+Paste this into Claude Code, Cursor, Windsurf, Copilot or Codex and it will set everything up for you.
+
+```text
+Install brightspace-d2l-mcp for me by following
+https://github.com/AnonymousOnyx22/brightspace-d2l-mcp/blob/main/llms.txt
+```
 
 ## Commands
 
