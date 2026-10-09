@@ -25,7 +25,7 @@ For any other app run npx brightspace-d2l-mcp config to print the MCP config JSO
 
 ## Tools
 
-13 read only MCP tools.
+15 MCP tools. None of them change anything in Brightspace.
 
 - get_todo gives a prioritized to-do list across every course with what is due soon, overdue, not open yet and already done
 - get_upcoming_due_dates gives upcoming deadlines with the real submission status of each assignment
@@ -40,6 +40,10 @@ For any other app run npx brightspace-d2l-mcp config to print the MCP config JSO
 - get_roster lists instructors and TAs with contact info and optionally the full class list
 - get_classlist_emails returns email addresses for everyone in a course
 - download_file saves a course file or submission to a folder the user chooses
+- get_grade_outlook gives the current standing in a course, best and worst possible final grade, and what is needed on the remaining work to reach a target grade
+- export_due_dates_calendar builds an .ics calendar file of unfinished deadlines for Google Calendar, Apple Calendar and Outlook
+
+The server also offers MCP prompts: what_should_i_do_now, plan_my_week, weekly_digest, grade_target, exam_prep, summarize_assignment and put_deadlines_in_my_calendar.
 
 Submission status values are submitted, graded, not_submitted, draft, not_open_yet, closed, past_due and unknown. Items that are submitted or graded are done and should never be suggested as a to-do. Quizzes can show unknown because Brightspace does not show students their quiz attempts, so ask the user.
 

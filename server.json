@@ -1,18 +1,20 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.AnonymousOnyx22/brightspace-d2l-mcp",
-  "description": "D2L Brightspace for AI agents: due dates with submission status, grades and course content.",
+  "description": "D2L Brightspace for AI agents: due dates with submission status, grades, target-grade calculator, calendar export and course content.",
   "repository": {
     "url": "https://github.com/AnonymousOnyx22/brightspace-d2l-mcp",
     "source": "github"
   },
-  "version": "1.1.0",
+  "version": "1.2.0",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "brightspace-d2l-mcp",
-      "version": "1.1.0",
-      "transport": { "type": "stdio" }
+      "version": "1.2.0",
+      "transport": {
+        "type": "stdio"
+      }
     }
   ]
 }
