@@ -27,6 +27,7 @@ export function registerGetClasslistEmails(
         "or wants contact info for everyone enrolled. Returns emails only, with no names or roles. " +
         "For names, roles or finding a specific instructor or TA, use get_roster instead.",
       inputSchema: GetClasslistEmailsSchema,
+      annotations: { readOnlyHint: true, openWorldHint: true },
     },
     async (args: any) => {
       try {

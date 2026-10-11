@@ -169,7 +169,7 @@ App ids: `claude-desktop`, `claude-code`, `cursor`, `vscode`, `windsurf`, `codex
 ## Privacy and security
 
 - **Your password is never seen or stored.** You type it into your school's own sign-in page in a real browser.
-- **Read-only.** It can't submit, post, or change anything in Brightspace.
+- **Read-only.** It can't submit, post, or change anything in Brightspace. No tool sends anything but GET requests, the API client has no write methods at all, and a test fails the build if one is ever added. See [how read-only is enforced](SECURITY.md#how-read-only-is-enforced).
 - **Local only.** Everything runs on your computer and talks only to your school's Brightspace. There's no server in between, and no analytics.
 - **Uses the official Brightspace API** with the same access you have in your browser.
 - Your session is saved in `~/.brightspace-d2l-mcp/`, readable only by your user account. `logout` deletes it; `uninstall` deletes everything.

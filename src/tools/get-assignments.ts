@@ -480,6 +480,7 @@ export function registerGetAssignments(
       description:
         "Fetch assignments and quizzes for a specific course or all enrolled courses. Shows dropbox submissions and quizzes with due dates, status, and rubric info. Use this when the user asks about assignments, homework, what to submit, quizzes, or assignment details and rubrics.",
       inputSchema: GetAssignmentsSchema,
+      annotations: { readOnlyHint: true, openWorldHint: true },
     },
     async (args: any) => {
       try {

@@ -59,6 +59,7 @@ export function registerGetTodo(server: McpServer, apiClient: D2LApiClient, conf
         "Use this first when the user asks what to work on, what's left, or what they should do now. " +
         "For a plain chronological list of deadlines or a custom date range, use get_upcoming_due_dates instead.",
       inputSchema: GetTodoSchema,
+      annotations: { readOnlyHint: true, openWorldHint: true },
     },
     async (args: unknown) => {
       try {

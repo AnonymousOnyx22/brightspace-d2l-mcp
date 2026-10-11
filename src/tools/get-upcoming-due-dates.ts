@@ -192,6 +192,7 @@ export function registerGetUpcomingDueDates(server: McpServer, apiClient: D2LApi
         "Dates are UTC ISO strings; convert to the user's local time. Use for deadlines, what's due and date ranges, " +
         "in date order. For advice on what to do first, use get_todo instead.",
       inputSchema: GetUpcomingDueDatesSchema,
+      annotations: { readOnlyHint: true, openWorldHint: true },
     },
     async (args: unknown) => {
       try {
