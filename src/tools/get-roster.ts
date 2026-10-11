@@ -60,6 +60,7 @@ export function registerGetRoster(
       description:
         "Fetch the roster for a course including instructors, TAs, and optionally students with their names, emails, and roles. Use this when the user asks about classmates, instructor contact info, TA emails, professor names, or who's in a class. By default returns only instructors and TAs for privacy. Use includeStudents to get full class list. For just a plain list of email addresses to copy or email everyone, use get_classlist_emails instead.",
       inputSchema: GetRosterSchema,
+      annotations: { readOnlyHint: true, openWorldHint: true },
     },
     async (args: any) => {
       try {

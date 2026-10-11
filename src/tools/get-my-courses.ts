@@ -36,6 +36,7 @@ export function registerGetMyCourses(
       description:
         "Fetch your enrolled Brightspace courses with names, codes, and IDs. Use this when the user asks about their courses, enrolled classes, what they're taking this semester, or needs a course ID for other queries.",
       inputSchema: GetMyCoursesSchema,
+      annotations: { readOnlyHint: true, openWorldHint: true },
     },
     async (args: any) => {
       try {

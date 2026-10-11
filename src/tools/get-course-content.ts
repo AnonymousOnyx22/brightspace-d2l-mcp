@@ -191,6 +191,7 @@ export function registerGetCourseContent(
       description:
         "Fetch the content tree for a course showing modules, topics, files, and links. Use this when the user asks about course materials, lecture slides, uploaded files, content structure, or what's in a course module. Use moduleTitle to filter to a specific module (e.g. 'Labs', 'Staff', 'Homeworks') instead of fetching the entire tree. Use maxDepth to limit recursion depth for a table-of-contents view.",
       inputSchema: GetCourseContentSchema,
+      annotations: { readOnlyHint: true, openWorldHint: true },
     },
     async (args: any) => {
       try {

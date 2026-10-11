@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Removed the unused write methods from the API client, marked every `get_` tool read only, and added a test that fails if a write request is ever added. Documented how read-only is enforced in SECURITY.md.
+
 ## 1.2.0
 
 - New `get_grade_outlook` tool. It shows where you stand in a course, your best and worst possible final grade, and the average you need on the remaining work to reach a target grade ("what do I need on the final to get an 80?").
