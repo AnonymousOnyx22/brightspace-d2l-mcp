@@ -72,6 +72,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Wait for the npm version to be visible
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          for i in $(seq 1 30); do
+            if npm view "brightspace-d2l-mcp@$version" version >/dev/null 2>&1; then exit 0; fi
+            echo "Waiting for brightspace-d2l-mcp@$version on npm ($i/30)..."
+            sleep 10
+          done
+          echo "::error::brightspace-d2l-mcp@$version never appeared on npm"
+          exit 1
       - name: Install mcp-publisher
         run: |
           curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
