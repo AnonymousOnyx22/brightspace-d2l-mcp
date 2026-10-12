@@ -26,6 +26,8 @@ import {
   registerGetTodo,
   registerGetGradeOutlook,
   registerExportDueDatesCalendar,
+  registerGetCalendarEvents,
+  registerGetWhatsNew,
 } from "./tools/index.js";
 import { registerPrompts } from "./prompts.js";
 
@@ -104,6 +106,8 @@ function createMcpServer({ config, apiClient }: Backend): McpServer {
   registerGetDiscussions(server, apiClient);
   registerGetGradeOutlook(server, apiClient);
   registerExportDueDatesCalendar(server, apiClient, config);
+  registerGetCalendarEvents(server, apiClient, config);
+  registerGetWhatsNew(server, apiClient, config);
   registerPrompts(server);
   return server;
 }

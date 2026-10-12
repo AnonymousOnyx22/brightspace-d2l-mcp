@@ -123,3 +123,15 @@ export const ExportDueDatesCalendarSchema = z.object({
   downloadPath: z.string().min(1).optional()
     .describe("Absolute path to a directory. When given, the .ics file is saved there instead of returned as text."),
 });
+
+export const GetCalendarEventsSchema = z.object({
+  daysAhead: z.coerce.number().int().min(0).max(180).default(30).describe("How many days ahead to include"),
+  daysBack: z.coerce.number().int().min(0).max(60).default(0).describe("Also include events from this many days ago"),
+  courseId: z.coerce.number().int().positive().optional().describe("Only include this course"),
+  search: z.string().max(200).optional().describe("Only events whose title or description contains this text, for example 'exam' or 'midterm'"),
+});
+
+export const GetWhatsNewSchema = z.object({
+  sinceDays: z.coerce.number().int().min(1).max(30).default(7).describe("How many days back to look for new announcements"),
+  courseId: z.coerce.number().int().positive().optional().describe("Only check this course"),
+});

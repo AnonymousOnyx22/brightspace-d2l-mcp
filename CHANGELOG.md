@@ -1,7 +1,13 @@
 # Changelog
 
-## Unreleased
+## 1.3.0
 
+- Setup closes its window when it finishes on Windows, after a 10 second countdown. Press Enter to close it straight away, type k to keep it open, or pass `--keep-open`. Every command now exits as soon as it is done, so the terminal is never left hanging.
+- New `get_calendar_events` tool. It reads the course calendars for exams, tests, labs, classes and other events instructors post, so you can ask "when is my midterm?". Search by text and look up to 180 days ahead.
+- New `get_whats_new` tool. One catch-up across every course: new announcements, newly marked work you have not opened, unread discussion posts and quizzes you have not tried.
+- New prompts `catch_me_up` and `when_are_my_exams`. `weekly_digest` now includes events and newly marked work.
+- Fixed releases not reaching npm and the MCP Registry. 1.1.0 and 1.2.0 never published because npm refused the upload; the workflow now accepts trusted publishing or an `NPM_TOKEN` secret, explains what to set up when npm refuses, and publishes to the MCP Registry right after npm.
+- New `npm run stats` and a weekly `stats` workflow that report npm downloads, GitHub stars and traffic, registry versions, and how this server compares with other Brightspace MCP servers.
 - Removed the unused write methods from the API client, marked every `get_` tool read only, and added a test that fails if a write request is ever added. Documented how read-only is enforced in SECURITY.md.
 
 ## 1.2.0

@@ -1,18 +1,26 @@
 name: publish
 
-# Publishes to npm when a GitHub release is published.
-# Uses npm trusted publishing (OIDC), so no npm token is stored in the repo.
+# Publishes to npm, then to the MCP Registry, when a GitHub release is published.
+#
+# npm auth, either one works:
+#   1. Trusted publishing (recommended, no secret): on npmjs.com open the package's
+#      Settings > Trusted Publisher, choose GitHub Actions, and enter
+#      owner AnonymousOnyx22, repository brightspace-d2l-mcp, workflow publish.yml.
+#   2. A granular npm access token with publish rights, saved as the NPM_TOKEN repo secret.
+#
+# Can also be started by hand from the Actions tab to retry a release.
 
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 permissions:
   contents: read
   id-token: write
 
 jobs:
-  publish:
+  npm:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,12 +29,17 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org
           cache: npm
-      - name: Check release tag matches package.json version
+      - name: Check versions match
         run: |
-          tag="${GITHUB_REF_NAME#v}"
           version="$(node -p "require('./package.json').version")"
-          if [ "$tag" != "$version" ]; then
-            echo "Release tag $GITHUB_REF_NAME does not match package.json version $version"
+          server="$(node -p "require('./server.json').version")"
+          pkg="$(node -p "require('./server.json').packages[0].version")"
+          if [ "$server" != "$version" ] || [ "$pkg" != "$version" ]; then
+            echo "::error::server.json ($server / $pkg) does not match package.json ($version)"
+            exit 1
+          fi
+          if [ "${{ github.event_name }}" = "release" ] && [ "${GITHUB_REF_NAME#v}" != "$version" ]; then
+            echo "::error::Release tag $GITHUB_REF_NAME does not match package.json version $version"
             exit 1
           fi
       - name: Skip if this version is already on npm
@@ -42,4 +55,35 @@ jobs:
       - if: steps.check.outputs.skip != 'true'
         run: npm ci
       - if: steps.check.outputs.skip != 'true'
-        run: npm publish
+        name: npm publish
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if ! npm publish --provenance --access public 2>&1 | tee publish.log; then
+            if grep -q "E404\|ENEEDAUTH\|E401\|E403" publish.log; then
+              echo "::error::npm refused the publish. Set up trusted publishing for publish.yml on npmjs.com or add an NPM_TOKEN secret (see the top of publish.yml)."
+            fi
+            exit 1
+          fi
+
+  mcp-registry:
+    needs: npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install mcp-publisher
+        run: |
+          curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+      - name: Authenticate to MCP Registry
+        run: ./mcp-publisher login github-oidc
+      - name: Publish server to MCP Registry
+        shell: bash
+        run: |
+          if ! ./mcp-publisher publish 2>&1 | tee registry.log; then
+            if grep -q "duplicate version" registry.log; then
+              echo "This version is already in the MCP Registry."
+              exit 0
+            fi
+            exit 1
+          fi

@@ -1,8 +1,8 @@
 {
   "name": "brightspace-d2l-mcp",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "mcpName": "io.github.AnonymousOnyx22/brightspace-d2l-mcp",
-  "description": "MCP server for D2L Brightspace: connect Brightspace to Claude, ChatGPT, Cursor, Copilot and any AI agent. One-command setup at any school with normal browser sign-in (SSO, Duo, MFA). Due dates with real submission status, grades and target-grade calculator, calendar export, assignments, content, announcements.",
+  "description": "MCP server for D2L Brightspace: connect Brightspace to Claude, ChatGPT, Cursor, Copilot and any AI agent. One-command setup at any school with normal browser sign-in (SSO, Duo, MFA). Due dates with real submission status, exam and calendar events, what's new catch-up, grades and target-grade calculator, calendar export, assignments, content, announcements.",
   "type": "module",
   "main": "build/index.js",
   "bin": {
@@ -24,6 +24,7 @@
     "setup": "node build/index.js setup",
     "test": "vitest run",
     "test:watch": "vitest",
+    "stats": "node scripts/stats.mjs",
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
@@ -112,6 +113,11 @@
     "homework-planner",
     "d2l-calendar",
     "brightspace-calendar",
-    "brightspace-grades"
+    "brightspace-grades",
+    "exams",
+    "exam-schedule",
+    "whats-new",
+    "unread-feedback",
+    "brightspace-calendar-events"
   ]
 }
