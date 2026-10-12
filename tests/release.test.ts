@@ -15,6 +15,10 @@ describe("release metadata", () => {
     expect(server.name).toBe(pkg.mcpName);
   });
 
+  it("fits the MCP Registry's 100 character description limit", () => {
+    expect(read("server.json").description.length).toBeLessThanOrEqual(100);
+  });
+
   it("has a changelog entry for the current version", () => {
     const changelog = fs.readFileSync(path.join(root, "CHANGELOG.md"), "utf8");
     expect(changelog).toContain(`## ${read("package.json").version}`);
