@@ -147,7 +147,7 @@ https://github.com/AnonymousOnyx22/brightspace-d2l-mcp/blob/main/llms.txt
 
 | Command | What it does |
 |---|---|
-| `npx brightspace-d2l-mcp setup` | Pick your school, sign in, connect your AI apps |
+| `npx brightspace-d2l-mcp setup` | Pick your school, sign in, connect your AI apps. On Windows the window closes by itself when done (`--keep-open` to stop that) |
 | `npx brightspace-d2l-mcp login` | Sign in again |
 | `npx brightspace-d2l-mcp status` | Show your school, whether you're signed in, and connected apps |
 | `npx brightspace-d2l-mcp doctor` | Check Node, your school, sign-in and connected apps, and say how to fix anything wrong |
