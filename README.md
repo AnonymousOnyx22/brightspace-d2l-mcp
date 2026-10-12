@@ -16,6 +16,8 @@
 
 <p align="center">One command. Sign in the way you always do. No passwords stored.</p>
 
+<p align="center"><a href="https://brightspace-mcp.netlify.app"><b>brightspace-mcp.netlify.app</b></a></p>
+
 <p align="center">By AnonymousOnyx22</p>
 
 <br>
