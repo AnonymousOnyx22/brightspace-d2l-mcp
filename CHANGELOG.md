@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0
+
+- Update check. Running a command like `npx brightspace-d2l-mcp setup` on an older version now says which version is out and asks "Update now? (Y/n)". Yes switches to the new version and carries on with the same command. It never asks when an AI app runs the server, in CI, with `--yes`, or when `BRIGHTSPACE_NO_UPDATE_CHECK` is set.
+- Running `npx brightspace-d2l-mcp` with no command in a terminal now shows help instead of silently starting the server. AI apps are unaffected.
+
 ## 1.3.0
 
 - Setup closes its window when it finishes on Windows, after a 10 second countdown. Press Enter to close it straight away, type k to keep it open, or pass `--keep-open`. Every command now exits as soon as it is done, so the terminal is never left hanging.
