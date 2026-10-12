@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="300" viewBox="0 0 1000 300" role="img" aria-label="How it works: your AI app talks to this server on your computer, which uses the session from your normal browser sign-in to read Brightspace">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#8b93ad"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="300" rx="18" fill="#0f1528"/>
+
+  <g font-family="-apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif" text-anchor="middle">
+    <rect x="40" y="90" width="200" height="110" rx="14" fill="#18203a" stroke="#2c3657"/>
+    <text x="140" y="136" font-size="18" font-weight="700" fill="#e8ecf7">Your AI app</text>
+    <text x="140" y="162" font-size="14" fill="#8b93ad">Claude · Cursor · Copilot</text>
+
+    <rect x="400" y="70" width="200" height="150" rx="14" fill="#241a14" stroke="#ff7a45"/>
+    <text x="500" y="118" font-size="18" font-weight="700" fill="#ffb49a">This MCP server</text>
+    <text x="500" y="144" font-size="14" fill="#d9c2b5">runs on your computer</text>
+    <text x="500" y="176" font-size="13" fill="#b39c8f">no password stored</text>
+    <text x="500" y="196" font-size="13" fill="#b39c8f">read-only</text>
+
+    <rect x="760" y="90" width="200" height="110" rx="14" fill="#18203a" stroke="#2c3657"/>
+    <text x="860" y="136" font-size="18" font-weight="700" fill="#e8ecf7">Brightspace</text>
+    <text x="860" y="162" font-size="14" fill="#8b93ad">your school's D2L</text>
+
+    <path d="M244 145H392" stroke="#8b93ad" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="318" y="132" font-size="13" fill="#8b93ad">"what's due?"</text>
+    <path d="M604 145H752" stroke="#8b93ad" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="678" y="132" font-size="13" fill="#8b93ad">official API</text>
+
+    <rect x="330" y="244" width="340" height="40" rx="10" fill="#ffffff" fill-opacity="0.04" stroke="#ffffff" stroke-opacity="0.12"/>
+    <text x="500" y="269" font-size="14" fill="#aab3cc">Signed in once in your normal browser window</text>
+    <path d="M500 240V224" stroke="#8b93ad" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+  </g>
+</svg>
