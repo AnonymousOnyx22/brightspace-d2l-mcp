@@ -55,6 +55,8 @@ New to this? The **[step-by-step setup guide](docs/setup.md)** walks through eve
 | 👥 **Class list** | "Who's the TA for my networking course?" |
 | 🎯 **Target grade** | "What do I need on the final to get an 80?" · "Can I still pass?" |
 | 🗓️ **Calendar** | "Put my deadlines in my calendar" |
+| 📝 **Exams** | "When is my midterm?" · "What's on my schedule this week?" |
+| 🔔 **What's new** | "Catch me up" · "Did anything get graded?" |
 
 ### It knows what you've already handed in
 
@@ -71,7 +73,7 @@ This one checks your actual submission for every assignment:
 
 ## Tools
 
-15 MCP tools for D2L Brightspace. Everything reads from Brightspace and nothing is ever changed there:
+17 MCP tools for D2L Brightspace. Everything reads from Brightspace and nothing is ever changed there:
 
 | Tool | What it does |
 |---|---|
@@ -90,11 +92,13 @@ This one checks your actual submission for every assignment:
 | `download_file` | Saves a course file or submission to a folder you choose |
 | `get_grade_outlook` | Where you stand in a course and what you need on the remaining work to hit a target grade |
 | `export_due_dates_calendar` | Builds a calendar file (.ics) of your unfinished deadlines for Google Calendar, Apple Calendar and Outlook |
+| `get_calendar_events` | Exams, tests, labs, classes and other events from your course calendars |
+| `get_whats_new` | Catch-up across every course: new announcements, newly marked work, unread discussions and untried quizzes |
 
 ### Built-in prompts
 
 Apps that support MCP prompts show these as one-click shortcuts or slash commands:
-`what_should_i_do_now` · `plan_my_week` · `weekly_digest` · `grade_target` · `exam_prep` · `summarize_assignment` · `put_deadlines_in_my_calendar`
+`what_should_i_do_now` · `plan_my_week` · `weekly_digest` · `grade_target` · `exam_prep` · `summarize_assignment` · `put_deadlines_in_my_calendar` · `catch_me_up` · `when_are_my_exams`
 
 ## Works at any Brightspace school
 

@@ -31,7 +31,7 @@ interface EnrollmentResponse {
   Items: EnrollmentItem[];
 }
 
-interface CourseRef {
+export interface CourseRef {
   id: number;
   name: string | null;
 }
@@ -58,7 +58,7 @@ function unwrapList<T>(raw: unknown): T[] {
   return Array.isArray(raw) ? (raw as T[]) : ((raw as { Objects?: T[] })?.Objects ?? []);
 }
 
-async function resolveCourses(apiClient: D2LApiClient, config: AppConfig, courseId?: number): Promise<CourseRef[]> {
+export async function resolveCourses(apiClient: D2LApiClient, config: AppConfig, courseId?: number): Promise<CourseRef[]> {
   let items: EnrollmentItem[] = [];
   try {
     const response = await apiClient.get<EnrollmentResponse>(
