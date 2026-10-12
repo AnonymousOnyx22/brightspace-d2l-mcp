@@ -152,6 +152,8 @@ https://github.com/AnonymousOnyx22/brightspace-d2l-mcp/blob/main/llms.txt
 | `npx brightspace-d2l-mcp status` | Show your school, whether you're signed in, and connected apps |
 | `npx brightspace-d2l-mcp doctor` | Check Node, your school, sign-in and connected apps, and say how to fix anything wrong |
 | `npx brightspace-d2l-mcp logout` | Delete the saved session |
+
+When a newer version is out, commands ask whether to update first. Set `BRIGHTSPACE_NO_UPDATE_CHECK=1` to turn that off.
 | `npx brightspace-d2l-mcp uninstall` | Remove from all AI apps and delete all local data |
 | `npx brightspace-d2l-mcp serve --http` | Run over HTTP for ChatGPT and HTTP-based agents |
 | `npx brightspace-d2l-mcp config` | Print the MCP config JSON for any other app |
