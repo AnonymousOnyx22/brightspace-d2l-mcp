@@ -32,6 +32,23 @@ export async function ask(question: string, fallback = ""): Promise<string> {
   }
 }
 
+/** Like ask, but resolves with null if nothing is entered within timeoutMs. */
+export async function askWithTimeout(question: string, timeoutMs: number): Promise<string | null> {
+  if (!interactive) return null;
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return (await rl.question(`  ${question} `, { signal: controller.signal })).trim();
+  } catch {
+    console.log();
+    return null;
+  } finally {
+    clearTimeout(timer);
+    rl.close();
+  }
+}
+
 export async function confirm(question: string, defaultYes = true): Promise<boolean> {
   if (!interactive) return defaultYes;
   const answer = (await ask(`${question} ${dim(defaultYes ? "(Y/n)" : "(y/N)")}`)).toLowerCase();

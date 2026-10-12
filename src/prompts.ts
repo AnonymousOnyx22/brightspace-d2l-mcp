@@ -45,8 +45,9 @@ export function registerPrompts(server: McpServer): void {
     },
     () =>
       userMessage(
-        "Give me a weekly digest. Use get_todo for what is due, get_announcements for anything my instructors posted this week, " +
-          "and get_my_grades for grades that changed recently. Group it as Due, News and Grades, and keep each part to a few lines.",
+        "Give me a weekly digest. Use get_todo for what is due, get_whats_new for announcements and newly marked work from the last 7 days, " +
+          "get_calendar_events for exams and events this week, and get_my_grades for the marks themselves. " +
+          "Group it as Due, Events, News and Grades, and keep each part to a few lines.",
       ),
   );
 
@@ -116,6 +117,34 @@ export function registerPrompts(server: McpServer): void {
       userMessage(
         "Call export_due_dates_calendar for the next 30 days and give me the .ics file so I can add my deadlines to my calendar. " +
           "If you can create calendar events directly with another tool, offer that instead.",
+      ),
+  );
+
+  server.registerPrompt(
+    "catch_me_up",
+    {
+      title: "Catch me up",
+      description: "What changed since you last looked: new announcements, newly marked work, unread discussions.",
+    },
+    () =>
+      userMessage(
+        "Call get_whats_new and catch me up. Lead with newly marked work (unread feedback) and use get_my_grades to tell me the marks, " +
+          "then summarize new announcements in a line each, then mention unread discussions and quizzes I have not tried. " +
+          "Skip courses with nothing new.",
+      ),
+  );
+
+  server.registerPrompt(
+    "when_are_my_exams",
+    {
+      title: "When are my exams?",
+      description: "Finds exams, tests and midterms on the course calendars and in announcements.",
+    },
+    () =>
+      userMessage(
+        "Find my upcoming exams, tests, midterms and finals. Call get_calendar_events with daysAhead 120, then check " +
+          "get_announcements and get_syllabus for any exam dates that are not on the calendar. List each with course, date, time and location, " +
+          "soonest first, and say where you found it.",
       ),
   );
 }

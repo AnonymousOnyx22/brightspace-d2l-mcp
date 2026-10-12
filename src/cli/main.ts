@@ -23,6 +23,7 @@ export async function runCli(command: string, args: string[]): Promise<number> {
         yes: args.includes("--yes") || args.includes("-y"),
         skipLogin: args.includes("--skip-login"),
         apps: flagValue(args, "--apps")?.split(",").map((s) => s.trim()),
+        keepOpen: args.includes("--keep-open"),
       });
     case "login":
       return login();
@@ -156,7 +157,7 @@ ${ui.bold("brightspace-d2l-mcp")} ${ui.dim(`v${packageVersion()}`)}  Brightspace
   ${ui.cyan("serve --http")} Run over HTTP for ChatGPT and HTTP agents  [--port 8787] [--host 127.0.0.1] [--no-auth]
   ${ui.cyan("config")}      Print the MCP config JSON for any other app
 
-  Setup options: --school <address>  --yes  --skip-login  --apps ${APP_IDS.join(",")}
+  Setup options: --school <address>  --yes  --skip-login  --keep-open  --apps ${APP_IDS.join(",")}
 `);
   printManualConfig();
   console.log();

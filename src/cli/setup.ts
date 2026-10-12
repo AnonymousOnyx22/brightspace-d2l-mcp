@@ -12,6 +12,7 @@ import {
   serverEntry,
   type ClientTarget,
 } from "./clients.js";
+import { canCloseWindow, closeWindowAfterCountdown } from "./close-window.js";
 import * as ui from "./ui.js";
 
 export interface SetupFlags {
@@ -19,9 +20,17 @@ export interface SetupFlags {
   yes?: boolean;
   skipLogin?: boolean;
   apps?: string[];
+  /** Leave the terminal window open when setup finishes. */
+  keepOpen?: boolean;
 }
 
 export async function runSetup(flags: SetupFlags): Promise<number> {
+  const code = await setupSteps(flags);
+  if (code === 0 && !flags.keepOpen && canCloseWindow()) await closeWindowAfterCountdown();
+  return code;
+}
+
+async function setupSteps(flags: SetupFlags): Promise<number> {
   if (flags.yes) ui.setNonInteractive();
 
   console.log(`\n${ui.bold("Brightspace for your AI apps")} ${ui.dim("· setup takes about a minute")}`);

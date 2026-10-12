@@ -18,7 +18,7 @@ describe("prompts", () => {
     const client = await connect();
     const { prompts } = await client.listPrompts();
     expect(prompts.map((p) => p.name)).toEqual(
-      expect.arrayContaining(["what_should_i_do_now", "plan_my_week", "weekly_digest", "grade_target", "exam_prep", "summarize_assignment", "put_deadlines_in_my_calendar"]),
+      expect.arrayContaining(["what_should_i_do_now", "plan_my_week", "weekly_digest", "grade_target", "exam_prep", "summarize_assignment", "put_deadlines_in_my_calendar", "catch_me_up", "when_are_my_exams"]),
     );
   });
 

@@ -1,0 +1,27 @@
+name: stats
+
+# Weekly project stats in the run summary: npm downloads, GitHub stars and traffic,
+# registry versions, and how we compare with other Brightspace MCP servers.
+# Run it any time from the Actions tab with "Run workflow".
+
+on:
+  schedule:
+    - cron: "17 13 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Collect stats
+        env:
+          # A fine-grained token with "Administration: read" on this repo adds views, clones and referrers.
+          GITHUB_TOKEN: ${{ secrets.STATS_TOKEN || github.token }}
+        run: node scripts/stats.mjs
