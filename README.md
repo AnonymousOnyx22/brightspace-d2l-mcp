@@ -160,6 +160,7 @@ https://github.com/AnonymousOnyx22/brightspace-d2l-mcp/blob/main/llms.txt
 | `npx brightspace-d2l-mcp uninstall` | Remove from all AI apps and delete all local data |
 | `npx brightspace-d2l-mcp serve --http` | Run over HTTP for ChatGPT and HTTP-based agents |
 | `npx brightspace-d2l-mcp config` | Print the MCP config JSON for any other app |
+| `npx brightspace-d2l-mcp pro activate <key>` | Turn on [Pro](https://brightspacemcp.com/pro/): deadline alerts, a daily digest, grade alerts and a live calendar feed |
 
 When a newer version is out, commands ask whether to update first. Set `BRIGHTSPACE_NO_UPDATE_CHECK=1` to turn that off.
 
@@ -176,6 +177,17 @@ npx brightspace-d2l-mcp setup --yes                                 # accept eve
 App ids: `claude-desktop`, `claude-code`, `cursor`, `vscode`, `windsurf`, `codex`, `gemini-cli`, `cline`, `roo-code`, `opencode`, `zed`, `lm-studio`, `kiro`.
 
 </details>
+
+## Pro
+
+[Brightspace MCP Pro](https://brightspacemcp.com/pro/) ($4 CAD a month) adds desktop alerts on top of everything above:
+
+- **Deadline alerts** 24 hours and 2 hours before anything you haven't handed in is due
+- **Daily digest** each morning with what's due today and this week and new announcements
+- **Grade alerts** when a new grade is posted
+- **Calendar feed** at `http://127.0.0.1:47811/calendar.ics` for Apple Calendar and Outlook, kept up to date
+
+Pro runs on your computer, signs in the same way as the free version and checks Brightspace every 15 minutes. It starts at login. Only your license key is sent to brightspacemcp.com, to check the subscription with Stripe. Run `npx brightspace-d2l-mcp pro` for its commands (`status`, `start`, `stop`, `test`, `deactivate`).
 
 ## Privacy and security
 

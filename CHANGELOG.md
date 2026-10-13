@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0
+
+- Brightspace MCP Pro. `npx brightspace-d2l-mcp pro activate <key>` turns on deadline alerts (24 hours and 2 hours before unsubmitted work is due), a morning digest, grade alerts and a live calendar feed at `http://127.0.0.1:47811/calendar.ics`. A small background helper checks Brightspace every 15 minutes with the session already saved on your computer and starts at login (Startup folder on Windows, a LaunchAgent on macOS, XDG autostart on Linux). Only the license key is sent to brightspacemcp.com.
+- New `pro status`, `pro start`, `pro stop`, `pro test` and `pro deactivate` commands.
+
 ## 1.4.0
 
 - Update check. Running a command like `npx brightspace-d2l-mcp setup` on an older version now says which version is out and asks "Update now? (Y/n)". Yes switches to the new version and carries on with the same command. It never asks when an AI app runs the server, in CI, with `--yes`, or when `BRIGHTSPACE_NO_UPDATE_CHECK` is set.

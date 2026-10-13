@@ -41,6 +41,10 @@ export async function runCli(command: string, args: string[]): Promise<number> {
       return uninstall(args.includes("--yes") || args.includes("-y"));
     case "serve":
       return serve(args);
+    case "pro": {
+      const { runPro } = await import("../pro/cli.js");
+      return runPro(args);
+    }
     case "config":
       console.log(JSON.stringify({ mcpServers: { brightspace: serverEntry() } }, null, 2));
       return 0;
@@ -156,6 +160,7 @@ ${ui.bold("brightspace-d2l-mcp")} ${ui.dim(`v${packageVersion()}`)}  Brightspace
   ${ui.cyan("serve")}       Run the MCP server over stdio (what AI apps launch)
   ${ui.cyan("serve --http")} Run over HTTP for ChatGPT and HTTP agents  [--port 8787] [--host 127.0.0.1] [--no-auth]
   ${ui.cyan("config")}      Print the MCP config JSON for any other app
+  ${ui.cyan("pro")}         Pro: deadline alerts, daily digest, grade alerts, calendar sync
 
   Setup options: --school <address>  --yes  --skip-login  --keep-open  --apps ${APP_IDS.join(",")}
 `);
