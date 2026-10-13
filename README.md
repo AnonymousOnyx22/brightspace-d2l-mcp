@@ -18,8 +18,6 @@
 
 <p align="center"><a href="https://brightspace-mcp.netlify.app"><b>brightspace-mcp.netlify.app</b></a></p>
 
-<p align="center">By AnonymousOnyx22</p>
-
 <br>
 
 An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that gives AI assistants and agents read access to your Brightspace courses: due dates with real submission status, grades, assignments, rubrics, course content, announcements, discussions and class lists. It works at any school that uses D2L Brightspace, including schools with Microsoft, Duo, Okta or Shibboleth single sign-on.
@@ -38,10 +36,15 @@ Then ask your AI:
 > **"What should I work on right now?"**
 
 <p align="center">
+  <img src="assets/demo.gif" alt="Asking an AI what to work on and getting a Brightspace to-do list that skips submitted work (sample data)" width="760">
+</p>
+
+<p align="center">
   <img src="assets/setup.svg" alt="The setup command finding the school, signing in, and connecting AI apps" width="760">
 </p>
 
 New to this? The **[step-by-step setup guide](docs/setup.md)** walks through everything with pictures of each step.
+Using a specific app? See the guides for **[Claude](https://brightspace-mcp.netlify.app/claude/)** and **[ChatGPT](https://brightspace-mcp.netlify.app/chatgpt/)**, or **[how this compares](https://brightspace-mcp.netlify.app/compare/)** to other Brightspace MCP servers.
 
 ## What you can ask
 
@@ -154,11 +157,11 @@ https://github.com/AnonymousOnyx22/brightspace-d2l-mcp/blob/main/llms.txt
 | `npx brightspace-d2l-mcp status` | Show your school, whether you're signed in, and connected apps |
 | `npx brightspace-d2l-mcp doctor` | Check Node, your school, sign-in and connected apps, and say how to fix anything wrong |
 | `npx brightspace-d2l-mcp logout` | Delete the saved session |
-
-When a newer version is out, commands ask whether to update first. Set `BRIGHTSPACE_NO_UPDATE_CHECK=1` to turn that off.
 | `npx brightspace-d2l-mcp uninstall` | Remove from all AI apps and delete all local data |
 | `npx brightspace-d2l-mcp serve --http` | Run over HTTP for ChatGPT and HTTP-based agents |
 | `npx brightspace-d2l-mcp config` | Print the MCP config JSON for any other app |
+
+When a newer version is out, commands ask whether to update first. Set `BRIGHTSPACE_NO_UPDATE_CHECK=1` to turn that off.
 
 <details>
 <summary><b>Setup options</b></summary>
