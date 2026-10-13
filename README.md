@@ -20,7 +20,7 @@
 
 <p align="center">One command. Sign in the way you always do. No passwords stored.</p>
 
-<p align="center"><a href="https://brightspace-mcp.netlify.app"><b>brightspace-mcp.netlify.app</b></a></p>
+<p align="center"><a href="https://brightspacemcp.com"><b>brightspacemcp.com</b></a></p>
 
 <br>
 
@@ -48,7 +48,7 @@ Then ask your AI:
 </p>
 
 New to this? The **[step-by-step setup guide](docs/setup.md)** walks through everything with pictures of each step.
-Using a specific app? See the guides for **[Claude](https://brightspace-mcp.netlify.app/claude/)** and **[ChatGPT](https://brightspace-mcp.netlify.app/chatgpt/)**, or **[how this compares](https://brightspace-mcp.netlify.app/compare/)** to other Brightspace MCP servers.
+Using a specific app? See the guides for **[Claude](https://brightspacemcp.com/claude/)** and **[ChatGPT](https://brightspacemcp.com/chatgpt/)**, or **[how this compares](https://brightspacemcp.com/compare/)** to other Brightspace MCP servers.
 
 ## What you can ask
 
