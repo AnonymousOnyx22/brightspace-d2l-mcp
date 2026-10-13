@@ -3,6 +3,7 @@ import { readStoredConfig, writeStoredConfig } from "../utils/config.js";
 import { loginWithBrowser, LoginError, NoBrowserError, TokenManager } from "../auth/index.js";
 import { SERVER_NAME } from "../utils/paths.js";
 import { resolveSchool } from "./school.js";
+import { installChromium } from "../auth/install-browser.js";
 import { activateKey, startAlerts } from "../pro/cli.js";
 import { readLicense } from "../pro/license.js";
 import {
@@ -145,6 +146,7 @@ async function signIn(baseUrl: string): Promise<boolean> {
   ui.info(ui.dim("The window closes by itself once you're in. No password is saved by this tool."));
   if (ui.interactive) await ui.ask(ui.dim("Press Enter to open the browser..."));
 
+  let downloadedBrowser = false;
   for (;;) {
     try {
       const { token, displayName } = await loginWithBrowser({
@@ -157,6 +159,12 @@ async function signIn(baseUrl: string): Promise<boolean> {
       return true;
     } catch (error) {
       if (error instanceof NoBrowserError) {
+        if (!downloadedBrowser) {
+          downloadedBrowser = true;
+          ui.info("Chrome or Edge isn't installed, so setup is downloading a small browser just for signing in.");
+          ui.info(ui.dim("One time only, about 150 MB."));
+          if (await installChromium()) continue;
+        }
         ui.fail(error.message);
         return false;
       }
