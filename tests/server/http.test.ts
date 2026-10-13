@@ -44,13 +44,13 @@ describe("streamable HTTP server", () => {
     expect(body.result.tools.map((t: { name: string }) => t.name)).toContain("get_todo");
   });
 
-  it("accepts the token as a Bearer header and explains when setup hasn't run", async () => {
+  it("accepts the token as a Bearer header and asks for a subscription first", async () => {
     const token = url.split("/").pop()!;
     const base = url.replace(/\/mcp\/.*$/, "/mcp");
     const response = await rpc(base, { jsonrpc: "2.0", id: 2, method: "tools/call", params: { name: "get_todo", arguments: {} } }, { authorization: `Bearer ${token}` });
     const body = await response.json();
     expect(body.result.isError).toBe(true);
-    expect(body.result.content[0].text).toContain("not set up");
+    expect(body.result.content[0].text).toContain("needs an active subscription");
   });
 
   it("refuses --no-auth on a public interface", async () => {

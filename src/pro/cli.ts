@@ -7,6 +7,7 @@ import { calendarFile, calendarUrl, runAgent } from "./agent.js";
 import { notify } from "./notify.js";
 
 const PRO_COMMAND = `npx -y ${PACKAGE_NAME}@latest pro`;
+const ACTIVATE_COMMAND = `npx -y ${PACKAGE_NAME}@latest activate`;
 
 function start(): void {
   const file = installAutostart();
@@ -21,15 +22,12 @@ function printCalendarHelp(): void {
   ui.info(ui.dim(`It stays up to date while your computer is on. The file is also saved at ${calendarFile()}`));
 }
 
-async function activate(key: string | undefined): Promise<number> {
-  if (!key || !KEY_PATTERN.test(key.trim())) {
-    ui.fail(`That doesn't look like a Pro key. It starts with ${ui.bold("bmp_")}. Copy it from the page you saw after paying.`);
-    return 1;
-  }
-  key = key.trim();
-  if (!loadConfig().baseUrl) {
-    ui.fail(`Set up the free version first: ${SETUP_COMMAND}`);
-    return 1;
+/** Checks a key online and saves it. Prints why when it fails. */
+export async function activateKey(key: string | undefined): Promise<boolean> {
+  key = key?.trim();
+  if (!key || !KEY_PATTERN.test(key)) {
+    ui.fail(`That doesn't look like a key. It starts with ${ui.bold("bmp_")}. Copy it from the page you saw after starting your trial.`);
+    return false;
   }
   ui.info("Checking your key...");
   let result;
@@ -37,27 +35,41 @@ async function activate(key: string | undefined): Promise<number> {
     result = await checkLicenseOnline(key);
   } catch (error) {
     ui.fail(`Couldn't reach brightspacemcp.com. Check your internet and try again. ${ui.dim(String(error instanceof Error ? error.message : error))}`);
-    return 1;
+    return false;
   }
   if (!result.active) {
-    ui.fail(result.status === "invalid" ? "That key isn't valid." : `That subscription isn't active (${result.status}).`);
-    return 1;
+    ui.fail(result.status === "invalid" ? "That key isn't valid." : `That subscription isn't active (${result.status}). Renew at brightspacemcp.com/pro`);
+    return false;
   }
   const now = Date.now();
   writeLicense({ key, ...result, checkedAt: now, lastActiveAt: now });
-  ui.ok("Pro is activated.");
+  ui.ok(result.status === "trialing" ? "Free trial active." : "Subscription active.");
+  return true;
+}
+
+/** Turns on alerts after setup or activation. */
+export async function startAlerts(): Promise<void> {
   start();
-  await notify({ title: "Brightspace MCP Pro is on", body: "You'll get deadline, grade and daily alerts here." });
+  await notify({ title: "Brightspace MCP is on", body: "You'll get deadline, grade and daily alerts here." });
   printCalendarHelp();
+}
+
+async function activate(key: string | undefined): Promise<number> {
+  if (!(await activateKey(key))) return 1;
+  if (!loadConfig().baseUrl) {
+    ui.info(`Next, connect your school and AI apps: ${ui.cyan(SETUP_COMMAND)}`);
+    return 0;
+  }
+  await startAlerts();
   console.log();
   return 0;
 }
 
 function status(): number {
   const license = readLicense();
-  console.log(`\n${ui.bold("Brightspace MCP Pro")}`);
+  console.log(`\n${ui.bold("Brightspace MCP subscription")}`);
   if (!license) {
-    ui.warn(`Not activated. Get Pro at brightspacemcp.com/pro, then run: ${PRO_COMMAND} activate <key>`);
+    ui.warn(`Not activated. Start a free trial at brightspacemcp.com/pro, then run: ${ACTIVATE_COMMAND} <key>`);
     return 1;
   }
   if (license.active) ui.ok(`License: active${license.periodEnd ? ui.dim(` (renews ${new Date(license.periodEnd * 1000).toLocaleDateString()})`) : ""}`);
@@ -79,7 +91,7 @@ export async function runPro(args: string[]): Promise<number> {
       return status();
     case "start":
       if (!readLicense()) {
-        ui.fail(`Activate Pro first: ${PRO_COMMAND} activate <key>`);
+        ui.fail(`Activate first: ${ACTIVATE_COMMAND} <key>`);
         return 1;
       }
       start();
@@ -92,24 +104,24 @@ export async function runPro(args: string[]): Promise<number> {
       removeAutostart();
       stopAgent();
       deleteLicense();
-      ui.ok("Pro removed from this computer. Manage or cancel your subscription at brightspacemcp.com/pro.");
+      ui.ok("Your key was removed from this computer. Manage or cancel your subscription at brightspacemcp.com/pro.");
       return 0;
     case "test":
-      await notify({ title: "Test from Brightspace MCP Pro", body: "If you can read this, notifications work." });
+      await notify({ title: "Test from Brightspace MCP", body: "If you can read this, notifications work." });
       ui.ok("Sent a test notification.");
       return 0;
     case "agent":
       return runAgent();
     default:
       console.log(`
-${ui.bold("Brightspace MCP Pro")}  Deadline alerts, a daily digest, grade alerts and calendar sync
+${ui.bold("Brightspace MCP alerts")}  Deadline alerts, a daily digest, grade alerts and calendar sync
 
-  ${ui.cyan("pro activate <key>")}  Turn on Pro with the key from brightspacemcp.com/pro
-  ${ui.cyan("pro status")}          Show your license, alerts and calendar link
+  ${ui.cyan("activate <key>")}      Turn on your subscription with the key from brightspacemcp.com/pro
+  ${ui.cyan("pro status")}          Show your subscription, alerts and calendar link
   ${ui.cyan("pro start")}           Start alerts (also at every login)
   ${ui.cyan("pro stop")}            Stop alerts
   ${ui.cyan("pro test")}            Send a test notification
-  ${ui.cyan("pro deactivate")}      Remove Pro from this computer
+  ${ui.cyan("deactivate")}          Remove your key from this computer
 `);
       return 0;
   }

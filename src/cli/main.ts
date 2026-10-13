@@ -24,6 +24,7 @@ export async function runCli(command: string, args: string[]): Promise<number> {
         skipLogin: args.includes("--skip-login"),
         apps: flagValue(args, "--apps")?.split(",").map((s) => s.trim()),
         keepOpen: args.includes("--keep-open"),
+        key: flagValue(args, "--key"),
       });
     case "login":
       return login();
@@ -44,6 +45,11 @@ export async function runCli(command: string, args: string[]): Promise<number> {
     case "pro": {
       const { runPro } = await import("../pro/cli.js");
       return runPro(args);
+    }
+    case "activate":
+    case "deactivate": {
+      const { runPro } = await import("../pro/cli.js");
+      return runPro([command, ...args]);
     }
     case "config":
       console.log(JSON.stringify({ mcpServers: { brightspace: serverEntry() } }, null, 2));
@@ -151,7 +157,8 @@ function printHelp(): void {
   console.log(`
 ${ui.bold("brightspace-d2l-mcp")} ${ui.dim(`v${packageVersion()}`)}  Brightspace (D2L) for Claude, Cursor and other AI apps
 
-  ${ui.cyan("setup")}       Pick your school, sign in, and connect your AI apps
+  ${ui.cyan("setup")}       Enter your key, pick your school, sign in, and connect your AI apps
+  ${ui.cyan("activate")}    Turn on your subscription: activate <key>
   ${ui.cyan("login")}       Sign in again
   ${ui.cyan("status")}      Show your school, session and connected apps
   ${ui.cyan("doctor")}      Check Node, your school, sign-in and AI apps, and say how to fix problems
@@ -160,9 +167,9 @@ ${ui.bold("brightspace-d2l-mcp")} ${ui.dim(`v${packageVersion()}`)}  Brightspace
   ${ui.cyan("serve")}       Run the MCP server over stdio (what AI apps launch)
   ${ui.cyan("serve --http")} Run over HTTP for ChatGPT and HTTP agents  [--port 8787] [--host 127.0.0.1] [--no-auth]
   ${ui.cyan("config")}      Print the MCP config JSON for any other app
-  ${ui.cyan("pro")}         Pro: deadline alerts, daily digest, grade alerts, calendar sync
+  ${ui.cyan("pro")}         Alerts: deadline alerts, daily digest, grade alerts, calendar sync
 
-  Setup options: --school <address>  --yes  --skip-login  --keep-open  --apps ${APP_IDS.join(",")}
+  Setup options: --key <key>  --school <address>  --yes  --skip-login  --keep-open  --apps ${APP_IDS.join(",")}
 `);
   printManualConfig();
   console.log();

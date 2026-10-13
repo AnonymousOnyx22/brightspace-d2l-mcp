@@ -2,7 +2,7 @@
   "name": "brightspace-d2l-mcp",
   "version": "1.5.0",
   "mcpName": "io.github.AnonymousOnyx22/brightspace-d2l-mcp",
-  "description": "MCP server for D2L Brightspace: connect Brightspace to Claude, ChatGPT, Cursor, Copilot and any AI agent. One-command setup at any school with normal browser sign-in (SSO, Duo, MFA). Due dates with real submission status, exam and calendar events, what's new catch-up, grades and target-grade calculator, calendar export, assignments, content, announcements.",
+  "description": "MCP server for D2L Brightspace (7-day free trial, then $4 CAD/month): connect Brightspace to Claude, ChatGPT, Cursor, Copilot and any AI agent. One-command setup at any school with normal browser sign-in (SSO, Duo, MFA). Due dates with real submission status, exam and calendar events, what's new catch-up, grades and target-grade calculator, calendar export, assignments, content, announcements.",
   "type": "module",
   "main": "build/index.js",
   "bin": {
@@ -45,7 +45,7 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "author": "AnonymousOnyx22",
   "homepage": "https://brightspacemcp.com",
   "repository": {

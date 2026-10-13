@@ -3,6 +3,8 @@ import { readStoredConfig, writeStoredConfig } from "../utils/config.js";
 import { loginWithBrowser, LoginError, NoBrowserError, TokenManager } from "../auth/index.js";
 import { SERVER_NAME } from "../utils/paths.js";
 import { resolveSchool } from "./school.js";
+import { activateKey, startAlerts } from "../pro/cli.js";
+import { readLicense } from "../pro/license.js";
 import {
   addToClient,
   allowToolsInClaudeCode,
@@ -22,6 +24,8 @@ export interface SetupFlags {
   apps?: string[];
   /** Leave the terminal window open when setup finishes. */
   keepOpen?: boolean;
+  /** Subscription key from brightspacemcp.com. */
+  key?: string;
 }
 
 export async function runSetup(flags: SetupFlags): Promise<number> {
@@ -35,7 +39,10 @@ async function setupSteps(flags: SetupFlags): Promise<number> {
 
   console.log(`\n${ui.bold("Brightspace for your AI apps")} ${ui.dim("· setup takes about a minute")}`);
 
-  ui.step(1, 3, "Your school");
+  ui.step(1, 4, "Your subscription");
+  if (!(await ensureLicense(flags.key))) return 1;
+
+  ui.step(2, 4, "Your school");
   const saved = readStoredConfig().baseUrl;
   let baseUrl: string | null = null;
   let input = flags.school ?? "";
@@ -64,7 +71,7 @@ async function setupSteps(flags: SetupFlags): Promise<number> {
   writeStoredConfig({ baseUrl });
   ui.ok(`Brightspace found at ${ui.bold(baseUrl)}`);
 
-  ui.step(2, 3, "Sign in");
+  ui.step(3, 4, "Sign in");
   if (flags.skipLogin) {
     ui.info(ui.dim("Skipped. You'll be asked to sign in the first time your AI uses Brightspace."));
   } else {
@@ -72,7 +79,7 @@ async function setupSteps(flags: SetupFlags): Promise<number> {
     if (!signedIn) return 1;
   }
 
-  ui.step(3, 3, "Connect your AI apps");
+  ui.step(4, 4, "Connect your AI apps");
   const found = detectClients().filter((c) => !flags.apps || flags.apps.includes(c.id));
   if (found.length === 0 && flags.apps) {
     ui.info(ui.dim("No apps selected. Add this to any MCP app's settings:"));
@@ -111,8 +118,25 @@ async function setupSteps(flags: SetupFlags): Promise<number> {
     if (needsRestart.length) ui.info(ui.dim(`Restart ${needsRestart.join(", ")} (or reload its window) to load Brightspace.`));
   }
   ui.info(`Try asking: ${ui.cyan('"What should I work on right now?"')}`);
+  await startAlerts();
   console.log();
   return 0;
+}
+
+async function ensureLicense(key: string | undefined): Promise<boolean> {
+  if (!key && readLicense()?.active) {
+    ui.ok("Subscription found on this computer.");
+    return true;
+  }
+  while (!key) {
+    if (!ui.interactive) {
+      ui.fail("No key given. Start a 7-day free trial at brightspacemcp.com/pro and run again with --key <your key>.");
+      return false;
+    }
+    ui.info(ui.dim("Start a 7-day free trial at brightspacemcp.com/pro to get your key."));
+    key = (await ui.ask("Your key (starts with bmp_):")).trim();
+  }
+  return activateKey(key);
 }
 
 async function signIn(baseUrl: string): Promise<boolean> {

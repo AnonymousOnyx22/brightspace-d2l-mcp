@@ -2,8 +2,10 @@
 
 ## 1.5.0
 
-- Brightspace MCP Pro. `npx brightspace-d2l-mcp pro activate <key>` turns on deadline alerts (24 hours and 2 hours before unsubmitted work is due), a morning digest, grade alerts and a live calendar feed at `http://127.0.0.1:47811/calendar.ics`. A small background helper checks Brightspace every 15 minutes with the session already saved on your computer and starts at login (Startup folder on Windows, a LaunchAgent on macOS, XDG autostart on Linux). Only the license key is sent to brightspacemcp.com.
-- New `pro status`, `pro start`, `pro stop`, `pro test` and `pro deactivate` commands.
+- Brightspace MCP is now a subscription: a 7-day free trial, then $4 CAD a month, from brightspacemcp.com/pro. Every tool needs an active key; without one, tools explain how to start the trial. Versions 1.4.0 and earlier stay available under the MIT License.
+- `setup` now starts with your key (`--key bmp_...` or paste it when asked). New `activate <key>` and `deactivate` commands.
+- Alerts are included: deadline alerts 24 hours and 2 hours before unsubmitted work is due, a morning digest, grade alerts and a live calendar feed at `http://127.0.0.1:47811/calendar.ics`. A small background helper checks Brightspace every 15 minutes with the session already saved on your computer and starts at login (Startup folder on Windows, a LaunchAgent on macOS, XDG autostart on Linux). Only the key is sent to brightspacemcp.com.
+- New `pro status`, `pro start`, `pro stop` and `pro test` commands for alerts.
 
 ## 1.4.0
 

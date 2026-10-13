@@ -30,6 +30,7 @@ import {
   registerGetWhatsNew,
 } from "./tools/index.js";
 import { registerPrompts } from "./prompts.js";
+import { requireLicense } from "./pro/gate.js";
 
 function notConfiguredClient(client: D2LApiClient): D2LApiClient {
   return new Proxy(client, {
@@ -90,6 +91,7 @@ function createMcpServer({ config, apiClient }: Backend): McpServer {
     },
     { capabilities: { logging: {} } },
   );
+  requireLicense(server);
 
   registerGetTodo(server, apiClient, config);
   registerGetMyCourses(server, apiClient, config);

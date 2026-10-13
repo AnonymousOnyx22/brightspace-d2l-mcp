@@ -1,16 +1,16 @@
 # Brightspace D2L MCP Server
 
-> MCP server that gives AI assistants and agents read access to D2L Brightspace. It returns due dates with real submission status, grades, assignments, rubrics, course content, announcements, discussions and class lists. It works at any school that uses D2L Brightspace, including schools with Microsoft, Duo, Okta or Shibboleth sign-in. It is read only and never stores a password.
+> MCP server that gives AI assistants and agents read access to D2L Brightspace. It returns due dates with real submission status, grades, assignments, rubrics, course content, announcements, discussions and class lists. It works at any school that uses D2L Brightspace, including schools with Microsoft, Duo, Okta or Shibboleth sign-in. It is read only and never stores a password. It needs a subscription: a 7-day free trial, then $4 CAD a month, from https://brightspacemcp.com/pro.
 
 ## Install
 
-Requirements are Node.js 20 or newer and Google Chrome or Microsoft Edge.
+Requirements are a key from https://brightspacemcp.com/pro (7-day free trial), Node.js 20 or newer, and Google Chrome or Microsoft Edge.
 
 Run this command in a terminal. It opens a browser window so the user can sign in, so do not run it silently in the background.
 
-npx brightspace-d2l-mcp setup
+npx brightspace-d2l-mcp setup --key bmp_your_key
 
-Setup asks for the school, opens a normal browser window where the user signs in the way they always do, and connects every supported AI app it finds. Afterwards restart the AI app.
+Setup checks the key, asks for the school, opens a normal browser window where the user signs in the way they always do, and connects every supported AI app it finds. Afterwards restart the AI app.
 
 Useful options
 

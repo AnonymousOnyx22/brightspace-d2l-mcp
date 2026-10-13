@@ -9,7 +9,7 @@
   <a href="https://www.npmjs.com/package/brightspace-d2l-mcp"><img src="https://img.shields.io/npm/dm/brightspace-d2l-mcp?style=flat-square&label=downloads&labelColor=1b2033&color=ff6a3d" alt="npm downloads per month"></a>
   <a href="https://github.com/AnonymousOnyx22/brightspace-d2l-mcp/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/AnonymousOnyx22/brightspace-d2l-mcp/ci.yml?style=flat-square&label=tests&labelColor=1b2033" alt="tests"></a>
   <img src="https://img.shields.io/badge/node-20%2B-3ddc97?style=flat-square&labelColor=1b2033" alt="Node 20+">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-9fb4ff?style=flat-square&labelColor=1b2033" alt="MIT license"></a>
+  <a href="https://brightspacemcp.com/pro/"><img src="https://img.shields.io/badge/7--day%20free%20trial-%244%20CAD%2Fmonth-9fb4ff?style=flat-square&labelColor=1b2033" alt="7-day free trial, then $4 CAD a month"></a>
 </p>
 
 <h3 align="center">Connect D2L Brightspace to Claude, ChatGPT, Cursor and Copilot.<br>It knows what you already handed in, so it only shows what is actually left.</h3>
@@ -24,13 +24,14 @@ An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that g
 
 ## Quick start
 
-You need [Node.js 20 or newer](https://nodejs.org/) and Google Chrome or Microsoft Edge.
+1. Start a **7-day free trial** at [brightspacemcp.com/pro](https://brightspacemcp.com/pro/) ($4 CAD a month after that, cancel anytime). You get a key that starts with `bmp_`.
+2. You need [Node.js 20 or newer](https://nodejs.org/) and Google Chrome or Microsoft Edge. Then run:
 
 ```bash
-npx brightspace-d2l-mcp setup
+npx brightspace-d2l-mcp setup --key bmp_your_key
 ```
 
-That's it. Setup asks for your school, opens a browser so you can sign in, and connects every AI app it finds.
+Setup checks your key, asks for your school, opens a browser so you can sign in, connects every AI app it finds and turns on alerts.
 Then ask your AI:
 
 > **"What should I work on right now?"**
@@ -160,7 +161,8 @@ https://github.com/AnonymousOnyx22/brightspace-d2l-mcp/blob/main/llms.txt
 | `npx brightspace-d2l-mcp uninstall` | Remove from all AI apps and delete all local data |
 | `npx brightspace-d2l-mcp serve --http` | Run over HTTP for ChatGPT and HTTP-based agents |
 | `npx brightspace-d2l-mcp config` | Print the MCP config JSON for any other app |
-| `npx brightspace-d2l-mcp pro activate <key>` | Turn on [Pro](https://brightspacemcp.com/pro/): deadline alerts, a daily digest, grade alerts and a live calendar feed |
+| `npx brightspace-d2l-mcp activate <key>` | Turn on your subscription with the key from [brightspacemcp.com/pro](https://brightspacemcp.com/pro/) |
+| `npx brightspace-d2l-mcp pro status` | Show your subscription, alerts and calendar feed |
 
 When a newer version is out, commands ask whether to update first. Set `BRIGHTSPACE_NO_UPDATE_CHECK=1` to turn that off.
 
@@ -178,16 +180,16 @@ App ids: `claude-desktop`, `claude-code`, `cursor`, `vscode`, `windsurf`, `codex
 
 </details>
 
-## Pro
+## Alerts
 
-[Brightspace MCP Pro](https://brightspacemcp.com/pro/) ($4 CAD a month) adds desktop alerts on top of everything above:
+Your subscription also includes desktop alerts:
 
 - **Deadline alerts** 24 hours and 2 hours before anything you haven't handed in is due
 - **Daily digest** each morning with what's due today and this week and new announcements
 - **Grade alerts** when a new grade is posted
 - **Calendar feed** at `http://127.0.0.1:47811/calendar.ics` for Apple Calendar and Outlook, kept up to date
 
-Pro runs on your computer, signs in the same way as the free version and checks Brightspace every 15 minutes. It starts at login. Only your license key is sent to brightspacemcp.com, to check the subscription with Stripe. Run `npx brightspace-d2l-mcp pro` for its commands (`status`, `start`, `stop`, `test`, `deactivate`).
+Alerts run on your computer with the same sign-in and check Brightspace every 15 minutes. They start at login. Only your key is sent to brightspacemcp.com, to check the subscription with Stripe. Run `npx brightspace-d2l-mcp pro` for the alert commands (`status`, `start`, `stop`, `test`).
 
 ## Privacy and security
 
@@ -311,7 +313,7 @@ No. It's read-only on purpose.
 <details>
 <summary><b>Is this made by D2L?</b></summary>
 
-No. It's an independent open-source project that uses the official Brightspace API with your own sign-in. It isn't affiliated with or endorsed by D2L.
+No. It's an independent project that uses the official Brightspace API with your own sign-in. It isn't affiliated with or endorsed by D2L.
 </details>
 
 ## Development
@@ -326,10 +328,10 @@ node build/index.js setup     # connects your AI apps to this local build
 ```
 
 Tools live in [`src/tools/`](src/tools), sign-in in [`src/auth/`](src/auth), and setup in [`src/cli/`](src/cli).
-Issues and pull requests are welcome.
+Bug reports are welcome as issues.
 
 ## License
 
-[MIT](LICENSE) © AnonymousOnyx22
+Proprietary, see [LICENSE](LICENSE). © AnonymousOnyx22. Versions 1.4.0 and earlier were released under the MIT License.
 
 D2L and Brightspace are trademarks of D2L Corporation. This project is not affiliated with D2L.

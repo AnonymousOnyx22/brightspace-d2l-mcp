@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const CLI_COMMANDS = new Set(["setup", "login", "status", "doctor", "logout", "uninstall", "serve", "config", "pro", "help", "--help", "-h", "--version", "-v"]);
+const CLI_COMMANDS = new Set(["setup", "login", "status", "doctor", "logout", "uninstall", "serve", "config", "pro", "activate", "deactivate", "help", "--help", "-h", "--version", "-v"]);
 // AI apps launch the server with piped stdio. A person typing the bare command in a terminal gets help instead of a silent server.
 const command = process.argv[2] ?? (process.stdin.isTTY ? "help" : undefined);
 
