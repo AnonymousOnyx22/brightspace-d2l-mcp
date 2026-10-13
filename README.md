@@ -18,8 +18,6 @@
 
 <p align="center"><a href="https://brightspace-mcp.netlify.app"><b>brightspace-mcp.netlify.app</b></a></p>
 
-<p align="center">By Nick, a networking student at Fleming College</p>
-
 <br>
 
 An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that gives AI assistants and agents read access to your Brightspace courses: due dates with real submission status, grades, assignments, rubrics, course content, announcements, discussions and class lists. It works at any school that uses D2L Brightspace, including schools with Microsoft, Duo, Okta or Shibboleth single sign-on.
@@ -119,7 +117,7 @@ If your school uses D2L Brightspace, yes. Setup opens a normal browser window so
 
 | School | Status |
 |---|---|
-| Fleming College | Tested by the author |
+| One college | Tested by the author |
 | Any other D2L school | Should work. Open an issue with yours and I will add it here |
 
 ## Works with your AI app or agent
