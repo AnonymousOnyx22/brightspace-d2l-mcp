@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.1
+
+- Make expired-session errors actionable in src/api/errors.ts
+- Sync llms.txt and glama.json to the 17 tools and 9 prompts
+- Put a vs-competitors table on the README first screen
+- Add an example prompt to every tool description in src/index.ts
+- Rewrite the npm description to lead with 'Brightspace MCP server'
+
 ## 1.4.0
 
 - Update check. Running a command like `npx brightspace-d2l-mcp setup` on an older version now says which version is out and asks "Update now? (Y/n)". Yes switches to the new version and carries on with the same command. It never asks when an AI app runs the server, in CI, with `--yes`, or when `BRIGHTSPACE_NO_UPDATE_CHECK` is set.
