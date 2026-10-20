@@ -16,13 +16,15 @@ const rpc = (target: string, body: unknown, headers: Record<string, string> = {}
     body: JSON.stringify(body),
   });
 
+// Importing the server pulls in every tool, which takes longer than the default hook
+// timeout on a slow machine when the rest of the suite runs at the same time.
 beforeAll(async () => {
   home = fs.mkdtempSync(path.join(os.tmpdir(), "bsm-http-"));
   process.env.BRIGHTSPACE_MCP_HOME = home;
   delete process.env.D2L_BASE_URL;
   const { startHttpServer } = await import("../../src/server.js");
   ({ url, close } = await startHttpServer({ port: 0, host: "127.0.0.1", noAuth: false }));
-});
+}, 60000);
 
 afterAll(async () => {
   await close();

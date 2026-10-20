@@ -7,6 +7,9 @@
 - Put a vs-competitors table on the README first screen
 - Add an example prompt to every tool description in src/index.ts
 - Rewrite the npm description to lead with 'Brightspace MCP server'
+- Update the MCP SDK to 1.32.1, playwright-core to 1.64.1, zod to 4.6.7 and unpdf to 1.9.1
+- Keep file-type on 21 and vitest on 4, because those releases need Node 22 and this server still runs on Node 20
+- Add release tests that keep package.json, server.json and the registry entry on one version, and that keep the build and test gate before publishing
 
 ## 1.4.0
 
