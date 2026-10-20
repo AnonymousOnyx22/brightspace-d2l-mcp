@@ -190,7 +190,8 @@ export function registerGetUpcomingDueDates(server: McpServer, apiClient: D2LApi
         "Upcoming due dates across all courses, with whether each assignment is already submitted " +
         "(submissionStatus: submitted, graded, draft, not_submitted, not_open_yet, closed, past_due, restricted, unknown). " +
         "Dates are UTC ISO strings; convert to the user's local time. Use for deadlines, what's due and date ranges, " +
-        "in date order. For advice on what to do first, use get_todo instead.",
+        "in date order. For advice on what to do first, use get_todo instead. " +
+        "Example: \"What's due next week?\"",
       inputSchema: GetUpcomingDueDatesSchema,
       annotations: { readOnlyHint: true, openWorldHint: true },
     },

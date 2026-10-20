@@ -80,7 +80,8 @@ export function registerGetWhatsNew(server: McpServer, apiClient: D2LApiClient, 
       description:
         "One catch-up summary across all courses: new announcements, unread assignment feedback (newly marked work), " +
         "unread discussion posts and quizzes not attempted yet. Use this when the user asks what's new, what they missed, " +
-        "whether anything was graded or posted, or for a daily or weekly catch-up.",
+        "whether anything was graded or posted, or for a daily or weekly catch-up. " +
+        "Example: \"What did I miss in my courses this week?\"",
       inputSchema: GetWhatsNewSchema,
       annotations: { readOnlyHint: true, openWorldHint: true },
     },

@@ -57,7 +57,8 @@ export function registerGetTodo(server: McpServer, apiClient: D2LApiClient, conf
         "Prioritized to-do list across all courses: unfinished work due soon, recently overdue work, " +
         "work not open yet, items to double-check (quizzes), and work already submitted. " +
         "Use this first when the user asks what to work on, what's left, or what they should do now. " +
-        "For a plain chronological list of deadlines or a custom date range, use get_upcoming_due_dates instead.",
+        "For a plain chronological list of deadlines or a custom date range, use get_upcoming_due_dates instead. " +
+        "Example: \"What should I work on right now?\"",
       inputSchema: GetTodoSchema,
       annotations: { readOnlyHint: true, openWorldHint: true },
     },

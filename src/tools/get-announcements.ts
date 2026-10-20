@@ -93,7 +93,7 @@ export function registerGetAnnouncements(
     {
       title: "Get Announcements",
       description:
-        "Fetch recent announcements from your courses. Can filter to a specific course or get announcements across all courses. Use this when the user asks about announcements, news, updates from instructors, recent posts, or what professors said.",
+        "Fetch recent announcements from your courses. Can filter to a specific course or get announcements across all courses. Use this when the user asks about announcements, news, updates from instructors, recent posts, or what professors said. Example: \"Did my professors post anything new?\"",
       inputSchema: GetAnnouncementsSchema,
       annotations: { readOnlyHint: true, openWorldHint: true },
     },

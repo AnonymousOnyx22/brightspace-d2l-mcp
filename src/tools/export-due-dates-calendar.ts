@@ -21,7 +21,8 @@ export function registerExportDueDatesCalendar(server: McpServer, apiClient: D2L
       description:
         "Builds an iCalendar (.ics) file of upcoming assignments and quizzes that opens in Google Calendar, Apple Calendar " +
         "and Outlook. Each event has a link back to Brightspace and a one day reminder. By default only unfinished work is " +
-        "included. Pass downloadPath (an absolute folder) to save the file, otherwise the calendar text is returned.",
+        "included. Pass downloadPath (an absolute folder) to save the file, otherwise the calendar text is returned. " +
+        "Example: \"Put my upcoming due dates in Google Calendar.\"",
       inputSchema: ExportDueDatesCalendarSchema,
       annotations: { readOnlyHint: false, idempotentHint: true, openWorldHint: true },
     },

@@ -20,8 +20,9 @@ export function registerGetGradeOutlook(server: McpServer, apiClient: D2LApiClie
       description:
         "Works out where the user stands in one course and what they need on the remaining work to reach a target grade. " +
         "Returns the current percentage, the best and worst possible final grade, and the average they must score on " +
-        "everything left to hit targetPercent. Use for \"what do I need on the final to get 80?\", \"can I still pass?\" " +
-        "or \"am I on track?\". For the raw grade items, use get_my_grades instead.",
+        "everything left to hit targetPercent. Use for \"can I still pass?\" or \"am I on track?\". " +
+        "For the raw grade items, use get_my_grades instead. " +
+        "Example: \"What do I need on the final to get an 80?\"",
       inputSchema: GetGradeOutlookSchema,
       annotations: { readOnlyHint: true, openWorldHint: true },
     },

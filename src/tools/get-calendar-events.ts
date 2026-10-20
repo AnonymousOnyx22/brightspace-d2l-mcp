@@ -79,7 +79,8 @@ export function registerGetCalendarEvents(server: McpServer, apiClient: D2LApiCl
       description:
         "Events from the Brightspace course calendar: exams, tests, labs, classes, office hours and other dated events " +
         "that instructors post, plus due-date events. Use this when the user asks when an exam or test is, what is on their " +
-        "schedule, or what is happening on a day. For what work is left to hand in, use get_todo instead.",
+        "schedule, or what is happening on a day. For what work is left to hand in, use get_todo instead. " +
+        "Example: \"When is my final exam?\"",
       inputSchema: GetCalendarEventsSchema,
       annotations: { readOnlyHint: true, openWorldHint: true },
     },
