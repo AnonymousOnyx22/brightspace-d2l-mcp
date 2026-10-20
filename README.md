@@ -50,6 +50,20 @@ Then ask your AI:
 New to this? The **[step-by-step setup guide](docs/setup.md)** walks through everything with pictures of each step.
 Using a specific app? See the guides for **[Claude](https://brightspace-mcp.netlify.app/claude/)** and **[ChatGPT](https://brightspace-mcp.netlify.app/chatgpt/)**, or **[how this compares](https://brightspace-mcp.netlify.app/compare/)** to other Brightspace MCP servers.
 
+## How it compares
+
+People usually weigh a few Brightspace MCP servers before picking one. Here are the three differences that come up most, with the [full comparison](https://brightspace-mcp.netlify.app/compare/) for the rest:
+
+| Server | Submission status | Sign-in (SSO) | Target grade |
+|---|---|---|---|
+| **Brightspace MCP** (this repo, `brightspace-d2l-mcp`) | Every due date says whether you already handed the work in, and the to-do list skips what is done | Real browser window where you sign in yourself, so any SSO works: Microsoft, Duo, Okta, Shibboleth. No password stored | `get_grade_outlook` gives your current percentage, your best and worst possible final grade, and what you need on the remaining work to hit any target |
+| [brightspace-mcp-server](https://www.npmjs.com/package/brightspace-mcp-server) by RohanMuppa | Shown in its assignments tool | Automated sign-in that saves your password in Keychain or Credential Manager, with presets for nine schools | No target-grade tool in its published list |
+| [brightspace-mcp](https://www.npmjs.com/package/brightspace-mcp) by JhostinAleck | Lists the files you submitted | Configured automation: HTTP login, headless browser with a Microsoft preset, Duo push, or pasted cookies | `grade_audit` answers "what you need to pass" |
+| [@n35da/brightspace-mcp](https://www.npmjs.com/package/@n35da/brightspace-mcp) | Shown on each dropbox folder | Real browser window where you sign in with your school's SSO | No target-grade tool in its published list |
+| [@exhabition/brightspace-mcp](https://www.npmjs.com/package/@exhabition/brightspace-mcp) (Rust) | Has assignment and submission readers | Visible Chromium window, Microsoft SSO only | No target-grade tool in its published list |
+
+"No target-grade tool in its published list" means we could not find one in each project's public README and tool list as of October 2026, not that it can never be added. Spot a mistake in the table? Open an issue and it will be fixed.
+
 ## What you can ask
 
 | | Try asking |
