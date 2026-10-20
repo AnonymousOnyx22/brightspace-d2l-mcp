@@ -1,6 +1,6 @@
 # Brightspace D2L MCP Server
 
-> MCP server that gives AI assistants and agents read access to D2L Brightspace. It returns due dates with real submission status, grades, assignments, rubrics, course content, announcements, discussions and class lists. It works at any school that uses D2L Brightspace, including schools with Microsoft, Duo, Okta or Shibboleth sign-in. It is read only and never stores a password.
+> MCP server that gives AI assistants and agents read access to D2L Brightspace. It returns due dates with real submission status, grades, assignments, rubrics, course content, announcements, discussions and class lists. It works at any school that uses D2L Brightspace, including schools with Microsoft, Duo, Okta or Shibboleth sign-in. It is read only and never stores a password. Current version: 1.4.0.
 
 ## Install
 
@@ -47,7 +47,7 @@ For any other app run npx brightspace-d2l-mcp config to print the MCP config JSO
 
 The server also offers MCP prompts: what_should_i_do_now, plan_my_week, weekly_digest, grade_target, exam_prep, summarize_assignment, put_deadlines_in_my_calendar, catch_me_up and when_are_my_exams.
 
-Submission status values are submitted, graded, not_submitted, draft, not_open_yet, closed, past_due and unknown. Items that are submitted or graded are done and should never be suggested as a to-do. Quizzes can show unknown because Brightspace does not show students their quiz attempts, so ask the user.
+Submission status values are submitted, graded, not_submitted, draft, not_open_yet, closed, past_due, restricted and unknown. Items that are submitted or graded are done and should never be suggested as a to-do. Quizzes can show unknown because Brightspace does not show students their quiz attempts, so ask the user.
 
 ## Other commands
 
