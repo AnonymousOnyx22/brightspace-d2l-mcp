@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.2
+
+- Bump dependencies and assert version sync in release tests
+
 ## 1.4.1
 
 - Make expired-session errors actionable in src/api/errors.ts
