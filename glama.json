@@ -1,4 +1,5 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/server.json",
+  "description": "Brightspace MCP server for D2L: connect Brightspace to Claude, ChatGPT, Cursor, Copilot and any AI agent, with due dates, submission status, grades and course files.",
   "maintainers": ["AnonymousOnyx22"]
 }
