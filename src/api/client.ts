@@ -6,7 +6,6 @@ import { discoverVersions } from "./version-discovery.js";
 import { ApiError, RateLimitError, NetworkError } from "./errors.js";
 import { withRetry, isRetryableFailure, retryAfterMsFrom, type RetryConfig } from "./retry.js";
 import { log } from "../utils/logger.js";
-import { LOGIN_COMMAND } from "../utils/paths.js";
 import { packageVersion } from "../utils/version.js";
 
 function isExpiredSessionRedirect(body: string, baseUrl: string): boolean {
@@ -206,7 +205,9 @@ export class D2LApiClient {
       }
       log("WARN", "Auto-reauthentication did not produce a valid token");
     }
-    throw new ApiError(401, path, `Session expired. Please re-authenticate via ${LOGIN_COMMAND}.`);
+    // The 401 wording and the fix both live in errors.ts, so every dead-session
+    // error carries the same sign-in command.
+    throw new ApiError(401, path, "Brightspace rejected the saved session.");
   }
 
   private async makeRequest<T>(
@@ -262,7 +263,7 @@ export class D2LApiClient {
           throw new ApiError(
             401,
             path,
-            `Session expired. Please re-authenticate via ${LOGIN_COMMAND}.`,
+            "Brightspace answered with its session-expired login page.",
           );
         }
         throw new ApiError(
@@ -345,7 +346,7 @@ export class D2LApiClient {
           throw new ApiError(
             401,
             path,
-            `Session expired. Please re-authenticate via ${LOGIN_COMMAND}.`,
+            "Brightspace answered with its session-expired login page.",
           );
         }
         // A legitimate HTML page: hand back an equivalent response with the

@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { AuthRequiredError } from "../../src/auth/authenticator.js";
 import { ApiError, NetworkError, RateLimitError, TokenRefreshError } from "../../src/api/errors.js";
 import { DownloadError } from "../../src/utils/download-errors.js";
+import { SETUP_COMMAND } from "../../src/utils/paths.js";
 
 vi.mock("../../src/utils/logger.js", () => ({ log: vi.fn() }));
 
@@ -42,7 +43,7 @@ describe("sanitizeError", () => {
   it("maps HTTP and input failures to friendly messages", () => {
     expect(textOf(sanitizeError(new ApiError(404, "/x", "nope")))).toContain("Resource not found");
     expect(textOf(sanitizeError(new ApiError(403, "/x", "nope")))).toContain("Access denied");
-    expect(textOf(sanitizeError(new ApiError(401, "/x", "nope")))).toContain("login");
+    expect(textOf(sanitizeError(new ApiError(401, "/x", "nope")))).toContain(SETUP_COMMAND);
     expect(textOf(sanitizeError(new RateLimitError("/x", 30)))).toContain("Rate limited");
     expect(textOf(sanitizeError(new NetworkError("socket hang up")))).toContain("Check your internet connection");
     expect(textOf(sanitizeError(new Error("something else")))).toContain("unexpected error");

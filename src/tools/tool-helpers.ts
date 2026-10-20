@@ -4,7 +4,7 @@ import { ApiError, RateLimitError, NetworkError } from "../api/index.js";
 import { TokenRefreshError } from "../api/errors.js";
 import { AuthRequiredError } from "../auth/authenticator.js";
 import { log } from "../utils/logger.js";
-import { LOGIN_COMMAND } from "../utils/paths.js";
+import { SETUP_COMMAND } from "../utils/paths.js";
 import {
   DownloadError,
   isSafeDetail,
@@ -61,7 +61,7 @@ export function sanitizeError(error: unknown): CallToolResult {
     }
     if (error.status === 401) {
       return errorResponse(
-        `Your Brightspace session expired and signing in again did not finish. Run \`${LOGIN_COMMAND}\` in a terminal, then try again.`
+        `Your Brightspace session expired and signing in again did not finish. Run \`${SETUP_COMMAND}\` in a terminal, then try again.`
       );
     }
     if (error.status === 403) {

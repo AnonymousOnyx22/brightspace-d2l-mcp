@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { D2LApiClient } from "../../src/api/client.js";
 import { ApiError } from "../../src/api/errors.js";
+import { SETUP_COMMAND } from "../../src/utils/paths.js";
 import type { TokenManager } from "../../src/auth/token-manager.js";
 import type { TokenData } from "../../src/types/index.js";
 
@@ -94,6 +95,8 @@ describe("the session-expired stub", () => {
       status: 401,
     });
     await expect(client.get("/d2l/api/lp/1.62/users/whoami")).rejects.toBeInstanceOf(ApiError);
+    // The person sees the message, not the status, so it names the fix.
+    await expect(client.get("/d2l/api/lp/1.62/users/whoami")).rejects.toThrow(SETUP_COMMAND);
   });
 
   it("forces token renewal without deleting shared session material", async () => {

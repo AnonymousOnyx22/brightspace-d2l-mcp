@@ -1,5 +1,20 @@
 
 import { AuthError } from "../utils/errors.js";
+import { SETUP_COMMAND } from "../utils/paths.js";
+
+// A dead Brightspace session must never reach the person as a bare 401. Every
+// 401 message carries the command that signs them in again, so the text stays
+// fixable wherever it shows up: a tool result mid-chat, a log line, or the CLI.
+export const SESSION_EXPIRED_HINT =
+  `Your Brightspace session expired. Run \`${SETUP_COMMAND}\` again to sign in, then retry.`;
+
+// Appends the sign-in command to a 401. A caller that already named the command
+// keeps its own wording, so the hint is never repeated in one message.
+function withSessionHint(status: number, message: string): string {
+  if (status !== 401 || message.includes(SETUP_COMMAND)) return message;
+  const detail = message.trim();
+  return detail ? `${detail} ${SESSION_EXPIRED_HINT}` : SESSION_EXPIRED_HINT;
+}
 
 // Base class for all HTTP API errors
 export class ApiError extends AuthError {
@@ -10,7 +25,10 @@ export class ApiError extends AuthError {
     public readonly responseBody?: string,
     cause?: Error,
   ) {
-    super(`[PBMCP-2001] API error (${status}) at ${endpoint}: ${message}`, cause);
+    super(
+      `[PBMCP-2001] API error (${status}) at ${endpoint}: ${withSessionHint(status, message)}`,
+      cause,
+    );
     this.name = "ApiError";
   }
 }
