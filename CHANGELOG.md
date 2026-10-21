@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.3
+
+- Add README section on switching from brightspace-mcp-server
+
 ## 1.4.2
 
 - Bump dependencies and assert version sync in release tests
