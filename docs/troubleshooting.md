@@ -68,7 +68,9 @@ Install the current LTS from [nodejs.org](https://nodejs.org/) and open a new te
 | `Your Brightspace session expired. Run npx -y brightspace-d2l-mcp@latest login in a terminal to sign in again.` | You turned automatic sign in off. Run `login` yourself (see below) |
 | `Brightspace could not renew your session right now. Your saved login was kept. Try again in a few minutes.` | The token service did not answer. Your login is intact, so just ask again shortly |
 | `Access denied. You may not have permission to access this resource.` | That course or item is not visible to your account |
-| `Resource not found. The course or item may not exist, or you may not have access.` | Wrong id, or the item is gone |
+| `Resource not found. The course or item may not exist, or you may not have access. Call get_my_courses to list valid course IDs, then retry.` | Wrong id, or the item is gone |
+| `Course 999999 is not one of your Brightspace courses. Call get_my_courses to list valid course IDs, then retry.` | The course id you passed is stale, so the course ended or the id came from somewhere else. Ask for the courses again and use one of the listed ids |
+| `No courses came back from Brightspace. Run npx -y brightspace-d2l-mcp@latest setup again to check your sign in, then retry.` | Your account shows no enrollments. Run `npx brightspace-d2l-mcp setup` once to check the sign in and your school |
 | `Rate limited by Brightspace. Please wait a moment and try again.` | Too many requests at once. Wait and ask again |
 | `An unexpected error occurred. Please try again.` | Look at the log lines below and open an issue if it keeps happening |
 

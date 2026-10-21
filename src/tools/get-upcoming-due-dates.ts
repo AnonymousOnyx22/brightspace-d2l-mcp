@@ -1,5 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { D2LApiClient, DEFAULT_CACHE_TTLS } from "../api/index.js";
+import { CourseNotFoundError, NoCoursesError } from "../api/errors.js";
+import { fetchAllItems } from "../api/paginate.js";
 import { GetUpcomingDueDatesSchema } from "./schemas.js";
 import { toolResponse, sanitizeError } from "./tool-helpers.js";
 import { log } from "../utils/logger.js";
@@ -25,10 +27,6 @@ interface QuizReadData {
 interface EnrollmentItem {
   OrgUnit: { Id: number; Name: string; Code: string };
   Access: { IsActive: boolean; CanAccess?: boolean };
-}
-
-interface EnrollmentResponse {
-  Items: EnrollmentItem[];
 }
 
 export interface CourseRef {
@@ -60,12 +58,14 @@ function unwrapList<T>(raw: unknown): T[] {
 
 export async function resolveCourses(apiClient: D2LApiClient, config: AppConfig, courseId?: number): Promise<CourseRef[]> {
   let items: EnrollmentItem[] = [];
+  let enrollmentsLoaded = false;
   try {
-    const response = await apiClient.get<EnrollmentResponse>(
+    items = await fetchAllItems<EnrollmentItem>(
+      apiClient,
       apiClient.lp("/enrollments/myenrollments/?orgUnitTypeId=3&isActive=true"),
       { ttl: DEFAULT_CACHE_TTLS.enrollments }
     );
-    items = response.Items ?? [];
+    enrollmentsLoaded = true;
   } catch (error) {
     if (!courseId) throw error;
     log("DEBUG", "due dates: could not fetch enrollments for course name", error);
@@ -73,6 +73,9 @@ export async function resolveCourses(apiClient: D2LApiClient, config: AppConfig,
 
   if (courseId) {
     const match = items.find((item) => item.OrgUnit.Id === courseId);
+    // Only claim the id is unknown when the list really loaded. After a failed
+    // lookup the course scoped request is still the better test.
+    if (enrollmentsLoaded && !match) throw new CourseNotFoundError(courseId);
     return [{ id: courseId, name: match?.OrgUnit.Name ?? null }];
   }
 
@@ -86,6 +89,7 @@ export async function resolveCourses(apiClient: D2LApiClient, config: AppConfig,
     })),
     config.courseFilter
   );
+  if (enrollmentsLoaded && filtered.length === 0) throw new NoCoursesError();
   return filtered.map((course) => ({ id: course.id, name: course.name }));
 }
 

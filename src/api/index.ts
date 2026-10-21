@@ -12,7 +12,15 @@ export { TTLCache } from "./cache.js";
 export { TokenBucket } from "./rate-limiter.js";
 
 // Errors
-export { ApiError, RateLimitError, NetworkError } from "./errors.js";
+export {
+  ApiError,
+  RateLimitError,
+  NetworkError,
+  CourseNotFoundError,
+  NoCoursesError,
+  COURSE_NOT_FOUND_HINT,
+  NO_COURSES_HINT,
+} from "./errors.js";
 
 // Types
 export type {

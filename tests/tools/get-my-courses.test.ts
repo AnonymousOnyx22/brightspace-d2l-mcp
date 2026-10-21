@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { registerGetMyCourses } from "../../src/tools/get-my-courses.js";
+import { SETUP_COMMAND } from "../../src/utils/paths.js";
 import type { AppConfig } from "../../src/types/index.js";
 
 /**
@@ -142,5 +143,33 @@ describe("get_my_courses pagination", () => {
     expect(idsOf(result)).toEqual([1, 2]);
     expect(requested).toHaveLength(2);
     expect(requested[1]).toContain("bookmark=b1");
+  });
+});
+
+/**
+ * Zero enrollments usually means the saved sign in no longer matches the
+ * account. An empty list gave the caller nothing to act on, so the tool now
+ * says which command checks the sign in again.
+ */
+describe("get_my_courses with no enrollments", () => {
+  it("points at setup instead of returning an empty list", async () => {
+    const apiClient = {
+      lp: (p: string) => `/d2l/api/lp/1.0${p}`,
+      get: vi.fn(async () => ({ Items: [] })),
+    };
+
+    let handler: (args: unknown) => Promise<any>;
+    const server = {
+      registerTool: (_n: string, _m: unknown, fn: (args: unknown) => Promise<any>) => {
+        handler = fn;
+      },
+    };
+    registerGetMyCourses(server as any, apiClient as any, makeConfig(true));
+
+    const result = await handler!({});
+
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain("No courses came back");
+    expect(result.content[0].text).toContain(SETUP_COMMAND);
   });
 });

@@ -1,7 +1,12 @@
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { ZodError } from "zod";
 import { ApiError, RateLimitError, NetworkError } from "../api/index.js";
-import { TokenRefreshError } from "../api/errors.js";
+import {
+  TokenRefreshError,
+  CourseNotFoundError,
+  NoCoursesError,
+  COURSE_NOT_FOUND_HINT,
+} from "../api/errors.js";
 import { AuthRequiredError } from "../auth/authenticator.js";
 import { log } from "../utils/logger.js";
 import { SETUP_COMMAND } from "../utils/paths.js";
@@ -55,9 +60,16 @@ export function sanitizeError(error: unknown): CallToolResult {
     return errorResponse(`Could not save the file.${detail} ${DOWNLOAD_FAILURE_GUIDANCE[error.kind]}`);
   }
 
+  // Messages are written by this package, never copied from a remote response.
+  if (error instanceof CourseNotFoundError || error instanceof NoCoursesError) {
+    return errorResponse(error.message);
+  }
+
   if (error instanceof ApiError) {
     if (error.status === 404) {
-      return errorResponse("Resource not found. The course or item may not exist, or you may not have access.");
+      return errorResponse(
+        `Resource not found. The course or item may not exist, or you may not have access. ${COURSE_NOT_FOUND_HINT}`
+      );
     }
     if (error.status === 401) {
       return errorResponse(

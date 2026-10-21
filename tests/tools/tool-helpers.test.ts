@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AuthRequiredError } from "../../src/auth/authenticator.js";
-import { ApiError, NetworkError, RateLimitError, TokenRefreshError } from "../../src/api/errors.js";
+import { ApiError, NetworkError, RateLimitError, TokenRefreshError, CourseNotFoundError, NoCoursesError } from "../../src/api/errors.js";
 import { DownloadError } from "../../src/utils/download-errors.js";
 import { SETUP_COMMAND } from "../../src/utils/paths.js";
 
@@ -47,6 +47,23 @@ describe("sanitizeError", () => {
     expect(textOf(sanitizeError(new RateLimitError("/x", 30)))).toContain("Rate limited");
     expect(textOf(sanitizeError(new NetworkError("socket hang up")))).toContain("Check your internet connection");
     expect(textOf(sanitizeError(new Error("something else")))).toContain("unexpected error");
+  });
+
+  it("tells the caller how to fix a missing resource", () => {
+    const result = sanitizeError(new ApiError(404, "/d2l/api/le/1.0/999999/content/toc", "nope"));
+    expect(result.isError).toBe(true);
+    expect(textOf(result)).toContain("get_my_courses");
+  });
+
+  it("turns a stale course id and an empty course list into the next step", () => {
+    const stale = sanitizeError(new CourseNotFoundError(999));
+    expect(stale.isError).toBe(true);
+    expect(textOf(stale)).toContain("999");
+    expect(textOf(stale)).toContain("get_my_courses");
+
+    const empty = sanitizeError(new NoCoursesError());
+    expect(empty.isError).toBe(true);
+    expect(textOf(empty)).toContain(SETUP_COMMAND);
   });
 });
 

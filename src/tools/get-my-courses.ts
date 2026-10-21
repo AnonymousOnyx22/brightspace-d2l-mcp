@@ -6,6 +6,7 @@ import {
   GetMyCoursesSchema,
 } from "./schemas.js";
 import { toolResponse, sanitizeError } from "./tool-helpers.js";
+import { NoCoursesError } from "../api/errors.js";
 import { log } from "../utils/logger.js";
 import { applyCourseFilter } from "../utils/course-filter.js";
 import type { AppConfig } from "../types/index.js";
@@ -70,6 +71,10 @@ export function registerGetMyCourses(
           })),
           { ...config.courseFilter, activeOnly }
         );
+
+        // An empty list leaves the caller stuck, so say which command checks
+        // the sign in again instead of returning nothing to act on.
+        if (courses.length === 0) throw new NoCoursesError();
 
         log("INFO", `get_my_courses: Retrieved ${courses.length} courses`);
         return toolResponse(courses);

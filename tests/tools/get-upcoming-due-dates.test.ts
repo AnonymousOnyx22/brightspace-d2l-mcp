@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { registerGetUpcomingDueDates } from "../../src/tools/get-upcoming-due-dates.js";
+import { SETUP_COMMAND } from "../../src/utils/paths.js";
 import type { AppConfig } from "../../src/types/index.js";
 
 
@@ -266,5 +267,62 @@ describe("get_upcoming_due_dates", () => {
     expect(requested.filter((p) => p.includes("/submissions/"))).toEqual([
       expect.stringContaining("/dropbox/folders/1/submissions/mysubmissions/"),
     ]);
+  });
+});
+
+/**
+ * A course id that is not in the enrollments used to fall through to a bare
+ * 404 or an empty list, and zero enrollments used to return nothing at all.
+ * Both now say which step fixes them.
+ */
+describe("get_upcoming_due_dates course lookups", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(NOW);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("names the course tool when the courseId is not among the enrollments", async () => {
+    const { call, requested } = setup((path) => {
+      if (path.includes("/enrollments/")) return enrollments(COURSE_A);
+      return { Objects: [] };
+    });
+
+    const result = await call({ daysAhead: 7, courseId: 424242 });
+
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain("424242");
+    expect(result.content[0].text).toContain("get_my_courses");
+    expect(requested.some((p) => /dropbox|quizzes/.test(p))).toBe(false);
+  });
+
+  it("points at setup when the enrollment list comes back empty", async () => {
+    const { call } = setup((path) => {
+      if (path.includes("/enrollments/")) return { Items: [] };
+      return { Objects: [] };
+    });
+
+    const result = await call({ daysAhead: 7 });
+
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain(SETUP_COMMAND);
+  });
+
+  it("still queries the course when the enrollment lookup failed", async () => {
+    const { call } = setup((path) => {
+      if (path.includes("/enrollments/")) throw new Error("enrollments unreachable");
+      if (path.includes("/dropbox/folders/")) {
+        return [{ Id: 1, Name: "HW", DueDate: daysFromNow(1), IsHidden: false }];
+      }
+      return [];
+    });
+
+    const items = parse(await call({ daysAhead: 7, courseId: COURSE_A.Id }));
+
+    expect(items).toHaveLength(1);
+    expect(items[0].courseName).toBeNull();
   });
 });
