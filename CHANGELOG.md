@@ -3,6 +3,7 @@
 ## 1.4.3
 
 - Add README section on switching from brightspace-mcp-server
+- Add docs/troubleshooting.md for connection, browser and sign in failures, linked from the README and llms.txt
 
 ## 1.4.2
 

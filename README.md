@@ -251,6 +251,8 @@ App ids: `claude-desktop`, `claude-code`, `cursor`, `vscode`, `windsurf`, `codex
 
 ## Troubleshooting
 
+Something not working? **[docs/troubleshooting.md](docs/troubleshooting.md)** walks through an app that shows no Brightspace tools, a setup window that never opens, and a single sign on that keeps failing, with the exact message each one prints. It starts with `npx brightspace-d2l-mcp doctor`.
+
 <details>
 <summary><b>"No supported browser was found"</b></summary>
 

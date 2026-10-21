@@ -71,5 +71,6 @@ The password is never seen or stored because the user types it into the school's
 ## Links
 
 - Repository https://github.com/AnonymousOnyx22/brightspace-d2l-mcp
+- Troubleshooting https://github.com/AnonymousOnyx22/brightspace-d2l-mcp/blob/main/docs/troubleshooting.md
 - npm https://www.npmjs.com/package/brightspace-d2l-mcp
 - Agent setup guides https://github.com/AnonymousOnyx22/brightspace-d2l-mcp/blob/main/docs/agents.md
