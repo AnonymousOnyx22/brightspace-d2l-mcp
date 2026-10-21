@@ -49,6 +49,30 @@ The server also offers MCP prompts: what_should_i_do_now, plan_my_week, weekly_d
 
 Submission status values are submitted, graded, not_submitted, draft, not_open_yet, closed, past_due, restricted and unknown. Items that are submitted or graded are done and should never be suggested as a to-do. Quizzes can show unknown because Brightspace does not show students their quiz attempts, so ask the user.
 
+## Which tool to use (decision table, routing table)
+
+Short routing: due today -> get_todo, target grade -> get_grade_outlook, catch up -> get_whats_new.
+
+| If the user asks about | Use this tool |
+|---|---|
+| What is due today, or what should I do now | get_todo |
+| What they need on the remaining work to hit a target grade | get_grade_outlook |
+| Catching up on what is new across every course | get_whats_new |
+| Upcoming deadlines with real submission status | get_upcoming_due_dates |
+| Exams, tests, labs or classes | get_calendar_events |
+| Current grades and instructor comments | get_my_grades |
+| Assignments and quizzes with rubrics | get_assignments |
+| Files attached to an assignment | get_assignment_files |
+| Course modules, slides, files and links | get_course_content |
+| Syllabus and course overview | get_syllabus |
+| Recent announcements | get_announcements |
+| Discussion forums and posts | get_discussions |
+| Instructors and TAs with contact info | get_roster |
+| Email addresses for a course | get_classlist_emails |
+| Saving a course file or submission | download_file |
+| Exporting unfinished deadlines to a calendar | export_due_dates_calendar |
+| Enrolled courses | get_my_courses |
+
 ## Other commands
 
 - npx brightspace-d2l-mcp login signs in again
