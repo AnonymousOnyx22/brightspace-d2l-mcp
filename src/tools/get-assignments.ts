@@ -478,7 +478,7 @@ export function registerGetAssignments(
     {
       title: "Get Assignments",
       description:
-        "Fetch assignments and quizzes for a specific course or all enrolled courses. Shows dropbox submissions and quizzes with due dates, status, and rubric info. Use this when the user asks about assignments, homework, what to submit, quizzes, or assignment details and rubrics. Example: \"What assignments do I have in Calculus this week?\"",
+        "Fetch assignments and quizzes for a specific course or all enrolled courses in D2L Brightspace. Shows dropbox (assignment) submissions and quizzes with due dates, status, and rubric info. Use this when the user asks about assignments, homework, dropboxes, dropbox folders, what to submit, quizzes, or assignment details and rubrics in Brightspace or D2L. Example: \"What assignments do I have in Calculus this week?\"",
       inputSchema: GetAssignmentsSchema,
       annotations: { readOnlyHint: true, openWorldHint: true },
     },

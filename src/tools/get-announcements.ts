@@ -93,7 +93,7 @@ export function registerGetAnnouncements(
     {
       title: "Get Announcements",
       description:
-        "Fetch recent announcements from your courses. Can filter to a specific course or get announcements across all courses. Use this when the user asks about announcements, news, updates from instructors, recent posts, or what professors said. Example: \"Did my professors post anything new?\"",
+        "Fetch recent announcements (news items) from your courses in D2L Brightspace. Can filter to a specific course or get announcements across all courses. Use this when the user asks about announcements, news, news items, updates from instructors, recent posts, or what professors said in Brightspace or D2L. Example: \"Did my professors post anything new?\"",
       inputSchema: GetAnnouncementsSchema,
       annotations: { readOnlyHint: true, openWorldHint: true },
     },
