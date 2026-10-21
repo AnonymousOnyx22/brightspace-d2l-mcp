@@ -64,6 +64,52 @@ People usually weigh a few Brightspace MCP servers before picking one. Here are 
 
 "No target-grade tool in its published list" means we could not find one in each project's public README and tool list as of October 2026, not that it can never be added. Spot a mistake in the table? Open an issue and it will be fixed.
 
+## Switching from brightspace-mcp-server
+
+If you are running [brightspace-mcp-server](https://www.npmjs.com/package/brightspace-mcp-server) by RohanMuppa and want to try this one, you only change the package name. Everything else stays where it is.
+
+In your MCP config, find the `brightspace` entry inside `mcpServers` and swap the command:
+
+```json
+{
+  "mcpServers": {
+    "brightspace": {
+      "command": "npx",
+      "args": ["-y", "brightspace-d2l-mcp@latest"]
+    }
+  }
+}
+```
+
+On Windows, wrap the launch in `cmd /c` the same way you do now:
+
+```json
+{
+  "mcpServers": {
+    "brightspace": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "brightspace-d2l-mcp@latest"]
+    }
+  }
+}
+```
+
+Then restart the app. If you would rather not edit files, run `npx brightspace-d2l-mcp setup`: it asks for your school, opens a browser window so you sign in, and writes this entry for you. You can also print the exact JSON for any app with `npx brightspace-d2l-mcp config`.
+
+### What carries over and what doesn't
+
+| | Status |
+|---|---|
+| The `brightspace` server name in `mcpServers` | Same here, so a config entry and any saved prompt that points at the `brightspace` server still lines up |
+| Tool names | They differ. See which tools this one has in the [Tools](#tools) table above and ask your AI for those names instead |
+| Your Brightspace account and courses | Nothing to move. This server signs in as you and sees the courses you are enrolled in, same as before |
+| A `D2L_INCLUDE_COURSES` or `D2L_EXCLUDE_COURSES` setting | Both names are read here too, so a course filter in your env block keeps working. `D2L_ACTIVE_ONLY` behaves the same way and is read here as well |
+| Whatever the first server saved on your computer | It is left alone. This server stores its own settings and session in `~/.brightspace-d2l-mcp/`, so nothing there changes unless you remove it yourself |
+
+Want to go back? Put the old command back in the same spot. Both servers can even be configured side by side under two different server names, but one AI app talking to two Brightspace servers at once tends to be more confusing than it is worth.
+
+A few things the first server does are not done here: it can sign you in without a browser window by saving your password in your computer's credential store, and it ships presets for several named schools. This server always opens a normal browser window where you sign in yourself, which is what makes any single sign-on work, and all it keeps afterward is your browser session.
+
 ## What you can ask
 
 | | Try asking |
@@ -282,6 +328,12 @@ Yes. Local agents and SDKs launch it with `npx -y brightspace-d2l-mcp@latest`, a
 <summary><b>Does it need an API key or admin access from my school?</b></summary>
 
 No. Brightspace API keys normally require an administrator. This uses your own student sign-in instead, so it sees exactly what you see in Brightspace, and nobody at your school has to set anything up.
+</details>
+
+<details>
+<summary><b>How do I switch from brightspace-mcp-server to this one?</b></summary>
+
+Change the package name in your MCP config: replace `brightspace-mcp-server` with `brightspace-d2l-mcp` in the same `brightspace` entry, then restart the app. Or run `npx brightspace-d2l-mcp setup` and let it write the entry for you. [Switching from brightspace-mcp-server](#switching-from-brightspace-mcp-server) covers what carries over and what does not.
 </details>
 
 <details>
