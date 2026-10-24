@@ -6,12 +6,12 @@
     "url": "https://github.com/AnonymousOnyx22/brightspace-d2l-mcp",
     "source": "github"
   },
-  "version": "1.4.3",
+  "version": "1.4.4",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "brightspace-d2l-mcp",
-      "version": "1.4.3",
+      "version": "1.4.4",
       "transport": {
         "type": "stdio"
       }

@@ -1,6 +1,6 @@
 # Brightspace D2L MCP Server
 
-> MCP server that gives AI assistants and agents read access to D2L Brightspace. It returns due dates with real submission status, grades, assignments, rubrics, course content, announcements, discussions and class lists. It works at any school that uses D2L Brightspace, including schools with Microsoft, Duo, Okta or Shibboleth sign-in. It is read only and never stores a password. Current version: 1.4.3.
+> MCP server that gives AI assistants and agents read access to D2L Brightspace. It returns due dates with real submission status, grades, assignments, rubrics, course content, announcements, discussions and class lists. It works at any school that uses D2L Brightspace, including schools with Microsoft, Duo, Okta or Shibboleth sign-in. It is read only and never stores a password. Current version: 1.4.4.
 
 ## Install
 
