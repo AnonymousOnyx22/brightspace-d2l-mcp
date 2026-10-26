@@ -2,7 +2,7 @@
 
 ## 1.4.5
 
-- Add README tools and prompts sync tests to release.test.ts
+- No change to the server itself. The tests now check that the README tools and prompts tables list exactly what the server offers, so the docs cannot drift from the code.
 
 ## 1.4.4
 
