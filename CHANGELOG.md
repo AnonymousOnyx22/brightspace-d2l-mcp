@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.5
+
+- Add README tools and prompts sync tests to release.test.ts
+
 ## 1.4.4
 
 - Make a stale course id actionable: the error now says to call `get_my_courses` to list valid course IDs, and a course tool that finds no enrollments at all points at running `npx brightspace-d2l-mcp setup` again
