@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Add a Prompts and example questions section to the README, with an example question and the tools used for each of the 9 MCP prompts.
 - Add a Related queries section to llms.txt so searches in students' own words, such as what is due this week, point at the right tool.
 - Trim package keywords to a short list in priority order so the npm search signal stays focused.
 

@@ -164,10 +164,21 @@ This one checks your actual submission for every assignment:
 | `get_calendar_events` | Exams, tests, labs, classes and other events from your course calendars |
 | `get_whats_new` | Catch-up across every course: new announcements, newly marked work, unread discussions and untried quizzes |
 
-### Built-in prompts
+## Prompts and example questions
 
-Apps that support MCP prompts show these as one-click shortcuts or slash commands:
-`what_should_i_do_now` · `plan_my_week` · `weekly_digest` · `grade_target` · `exam_prep` · `summarize_assignment` · `put_deadlines_in_my_calendar` · `catch_me_up` · `when_are_my_exams`
+Apps that support MCP prompts show these as one click shortcuts or slash commands. You do not have to remember the names: typing the example question in a normal chat works too, because each prompt simply tells the AI which tools to call.
+
+| Prompt | Example question | Tools it uses |
+|---|---|---|
+| `what_should_i_do_now` | "What should I work on right now?" | `get_todo` |
+| `plan_my_week` | "What should my week look like?" | `get_todo` |
+| `weekly_digest` | "Can you give me a weekly digest of deadlines, events and grades?" | `get_todo`, `get_calendar_events`, `get_whats_new`, `get_my_grades` |
+| `grade_target` | "What do I need on the final to get an 80?" | `get_my_courses`, `get_grade_outlook`, `get_syllabus` |
+| `exam_prep` | "Can you help me get ready for my networking exam next Friday?" | `get_my_courses`, `get_syllabus`, `get_course_content`, `get_announcements`, `get_todo` |
+| `summarize_assignment` | "Can you summarize the Lab 3 instructions and rubric?" | `get_assignments`, `get_assignment_files` |
+| `put_deadlines_in_my_calendar` | "Can you put my deadlines in my calendar?" | `export_due_dates_calendar` |
+| `catch_me_up` | "What's new, and did anything get graded?" | `get_whats_new`, `get_my_grades` |
+| `when_are_my_exams` | "When are my exams?" | `get_calendar_events`, `get_announcements`, `get_syllabus` |
 
 ## Works at any Brightspace school
 

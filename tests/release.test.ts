@@ -40,7 +40,7 @@ describe("release metadata", () => {
 
   it("lists exactly the 17 registered tools in README.md", () => {
     const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
-    const toolsSection = readme.slice(readme.indexOf("## Tools"), readme.indexOf("### Built-in prompts"));
+    const toolsSection = readme.slice(readme.indexOf("## Tools"), readme.indexOf("## Prompts and example questions"));
     const toolNames = [...toolsSection.matchAll(/\| `(\w+)` \|/g)].map((m) => m[1]);
     const expected = [
       "get_todo",
@@ -66,8 +66,11 @@ describe("release metadata", () => {
 
   it("lists exactly the 9 registered prompts in README.md", () => {
     const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
-    const promptsLine = readme.split("\n").find((line) => line.startsWith("`what_should_i_do_now`")) ?? "";
-    const promptNames = [...promptsLine.matchAll(/`(\w+)`/g)].map((m) => m[1]);
+    const promptsSection = readme.slice(
+      readme.indexOf("## Prompts and example questions"),
+      readme.indexOf("## Works at any Brightspace school"),
+    );
+    const promptNames = [...promptsSection.matchAll(/^\| `(\w+)` \|/gm)].map((m) => m[1]);
     const expected = [
       "what_should_i_do_now",
       "plan_my_week",
@@ -79,6 +82,7 @@ describe("release metadata", () => {
       "catch_me_up",
       "when_are_my_exams",
     ];
+    expect(promptNames).toHaveLength(expected.length);
     expect(new Set(promptNames)).toEqual(new Set(expected));
   });
 });
