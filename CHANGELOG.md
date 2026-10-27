@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Trim package keywords to a short list in priority order so the npm search signal stays focused.
+
 ## 1.4.5
 
 - No change to the server itself. The tests now check that the README tools and prompts tables list exactly what the server offers, so the docs cannot drift from the code.
