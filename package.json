@@ -71,6 +71,16 @@
     "assignments",
     "grades",
     "due-dates",
-    "calendar"
+    "calendar",
+    "d2l-mcp",
+    "d2l-brightspace",
+    "brightspace-ai",
+    "claude",
+    "claude-desktop",
+    "cursor",
+    "homework",
+    "rubrics",
+    "target-grade",
+    "grade-calculator"
   ]
 }
