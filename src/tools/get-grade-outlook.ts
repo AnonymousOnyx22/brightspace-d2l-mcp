@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { D2LApiClient, DEFAULT_CACHE_TTLS } from "../api/index.js";
 import { GetGradeOutlookSchema } from "./schemas.js";
-import { toolResponse, sanitizeError } from "./tool-helpers.js";
+import { toolResponse, errorResponse, sanitizeError } from "./tool-helpers.js";
 import { computeGradeOutlook } from "../utils/grade-math.js";
 
 interface GradeValue {
@@ -32,17 +32,23 @@ export function registerGetGradeOutlook(server: McpServer, apiClient: D2LApiClie
         const values = await apiClient.get<GradeValue[]>(apiClient.le(courseId, "/grades/values/myGradeValues/"), {
           ttl: DEFAULT_CACHE_TTLS.grades,
         });
-        const outlook = computeGradeOutlook(
-          values.map((value) => ({
-            name: value.GradeObjectName,
-            pointsNumerator: value.PointsNumerator,
-            pointsDenominator: value.PointsDenominator,
-            weightedNumerator: value.WeightedNumerator,
-            weightedDenominator: value.WeightedDenominator,
-          })),
-          { targetPercent, totalWeight },
-        );
-        return toolResponse({ courseId, ...outlook });
+         const outlook = computeGradeOutlook(
+           values.map((value) => ({
+             name: value.GradeObjectName,
+             pointsNumerator: value.PointsNumerator,
+             pointsDenominator: value.PointsDenominator,
+             weightedNumerator: value.WeightedNumerator,
+             weightedDenominator: value.WeightedDenominator,
+           })),
+           { targetPercent, totalWeight },
+         );
+         if (outlook.mode !== "weighted") {
+           return errorResponse(
+             "This course has no weighted grades yet, so there is nothing to base a target grade on. " +
+               "Try get_my_grades for the raw grade items.",
+           );
+         }
+         return toolResponse({ courseId, ...outlook });
       } catch (error) {
         return sanitizeError(error);
       }
