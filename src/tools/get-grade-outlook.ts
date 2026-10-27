@@ -42,9 +42,10 @@ export function registerGetGradeOutlook(server: McpServer, apiClient: D2LApiClie
            })),
            { targetPercent, totalWeight },
          );
-         if (outlook.mode !== "weighted") {
+         // a course graded only in points still gets its current percent; only a course with nothing graded is an error
+         if (outlook.mode === "none") {
            return errorResponse(
-             "This course has no weighted grades yet, so there is nothing to base a target grade on. " +
+             "This course has no graded items yet, so there is nothing to base a target grade on. " +
                "Try get_my_grades for the raw grade items.",
            );
          }
