@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Add a Related queries section to llms.txt so searches in students' own words, such as what is due this week, point at the right tool.
 - Trim package keywords to a short list in priority order so the npm search signal stays focused.
 
 ## 1.4.5

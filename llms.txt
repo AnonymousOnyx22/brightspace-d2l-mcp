@@ -73,6 +73,23 @@ Short routing: due today -> get_todo, target grade -> get_grade_outlook, catch u
 | Exporting unfinished deadlines to a calendar | export_due_dates_calendar |
 | Enrolled courses | get_my_courses |
 
+## Related queries
+
+Searches this page answers, in the words students use:
+
+- what is due this week Brightspace
+- Brightspace due dates and submission status
+- Brightspace grade calculator
+- what do I need on the final to get an 80
+- Brightspace target grade calculator
+- Brightspace exam dates
+- Brightspace assignment rubric
+- Brightspace unread discussions
+- Brightspace calendar export
+- D2L MCP
+- D2L Brightspace MCP server
+- connect Brightspace to Claude Desktop
+
 ## Other commands
 
 - npx brightspace-d2l-mcp login signs in again

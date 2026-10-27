@@ -81,6 +81,7 @@
     "homework",
     "rubrics",
     "target-grade",
-    "grade-calculator"
+    "grade-calculator",
+    "brightspace-grade-calculator"
   ]
 }
