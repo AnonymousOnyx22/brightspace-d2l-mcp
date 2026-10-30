@@ -110,7 +110,7 @@ export class CourseNotFoundError extends Error {
 // to read. Setting up again checks the saved sign in and the school address.
 export class NoCoursesError extends Error {
   constructor() {
-    super(NO_COURSES_HINT);
+    super(`${NO_COURSES_HINT} ${COURSE_NOT_FOUND_HINT}`);
     this.name = "NoCoursesError";
   }
 }
