@@ -26,6 +26,28 @@
 
 An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that gives AI assistants and agents read access to your Brightspace courses: due dates with real submission status, grades, assignments, rubrics, course content, announcements, discussions and class lists. It works at any school that uses D2L Brightspace, including schools with Microsoft, Duo, Okta or Shibboleth single sign-on.
 
+## Which tool to use
+
+| If you ask about | Use this tool |
+|---|---|
+| What to do now / what's due today | `get_todo` |
+| What I need on remaining work for a target grade | `get_grade_outlook` |
+| What's new across courses | `get_whats_new` |
+| Upcoming deadlines with submission status | `get_upcoming_due_dates` |
+| Exams, tests, labs or classes | `get_calendar_events` |
+| Grades and instructor comments | `get_my_grades` |
+| Assignments and quizzes with rubrics | `get_assignments` |
+| Files attached to an assignment | `get_assignment_files` |
+| Course modules, slides, files and links | `get_course_content` |
+| Syllabus and course overview | `get_syllabus` |
+| Recent announcements | `get_announcements` |
+| Discussion forums and posts | `get_discussions` |
+| Instructors and TAs with contact info | `get_roster` |
+| Email addresses for a course | `get_classlist_emails` |
+| Saving a course file or submission | `download_file` |
+| Exporting unfinished deadlines to a calendar | `export_due_dates_calendar` |
+| Enrolled courses | `get_my_courses` |
+
 ## Quick start
 
 You need [Node.js 20 or newer](https://nodejs.org/) and Google Chrome or Microsoft Edge.
