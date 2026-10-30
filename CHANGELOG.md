@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.7
+
+- Update the table of sibling MCP servers in the README
+
 ## 1.4.6
 
 - Add a Prompts and example questions section to the README, with an example question and the tools used for each of the 9 MCP prompts.
