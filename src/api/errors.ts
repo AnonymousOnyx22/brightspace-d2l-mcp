@@ -114,3 +114,23 @@ export class NoCoursesError extends Error {
     this.name = "NoCoursesError";
   }
 }
+
+// get_whats_new came back empty, so there is nothing new to report. Point at
+// the places a student can check for activity before assuming everything is done.
+export const NO_WHATS_NEW_HINT =
+  `Nothing new showed up. Check your Brightspace notifications and course activity, then try again with a longer window.`;
+export const WHATS_NEW_EMPTY_HINT = NO_WHATS_NEW_HINT;
+export const EMPTY_WHATS_NEW_HINT = NO_WHATS_NEW_HINT;
+
+export class NoWhatsNewError extends Error {
+  constructor() {
+    super(NO_WHATS_NEW_HINT);
+    this.name = "NoWhatsNewError";
+  }
+}
+export class WhatsNewEmptyError extends NoWhatsNewError {
+  constructor() { super(); this.name = "WhatsNewEmptyError"; }
+}
+export class EmptyWhatsNewError extends NoWhatsNewError {
+  constructor() { super(); this.name = "EmptyWhatsNewError"; }
+}
