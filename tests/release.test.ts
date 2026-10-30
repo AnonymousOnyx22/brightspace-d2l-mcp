@@ -85,4 +85,17 @@ describe("release metadata", () => {
     expect(promptNames).toHaveLength(expected.length);
     expect(new Set(promptNames)).toEqual(new Set(expected));
   });
+
+  it("lists the 4 competitor servers with npm links to their package names", () => {
+    const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
+    const section = readme.slice(
+      readme.indexOf("## How it compares"),
+      readme.indexOf("## Switching"),
+    );
+    const links = [...section.matchAll(/\[([^\]]+)\]\(https:\/\/www\.npmjs\.com\/package\/([^)\s]+)\)/g)];
+    expect(links).toHaveLength(4);
+    for (const [, name, pkg] of links) {
+      expect(pkg).toBe(name);
+    }
+  });
 });
