@@ -1,7 +1,7 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/server.json",
   "version": "1.4.7",
-  "description": "Brightspace MCP server for D2L: connect Brightspace to Claude, ChatGPT, Cursor, Copilot and any AI agent, with due dates, submission status, grades and course files.",
+  "description": "Brightspace MCP server for D2L: connect Brightspace to Claude Desktop, Claude Code, Cursor, VS Code and Windsurf, with due dates, submission status, grades and course files.",
   "tools": [
     "get_todo",
     "get_upcoming_due_dates",
@@ -31,6 +31,35 @@
     "put_deadlines_in_my_calendar",
     "catch_me_up",
     "when_are_my_exams"
+  ],
+  "tags": [
+    "brightspace",
+    "brightspace-mcp",
+    "brightspace mcp",
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "d2l",
+    "desire2learn",
+    "brightspace-api",
+    "lms",
+    "learning-management-system",
+    "student",
+    "assignments",
+    "grades",
+    "due-dates",
+    "calendar",
+    "d2l-mcp",
+    "d2l-brightspace",
+    "brightspace-ai",
+    "claude",
+    "claude-desktop",
+    "cursor",
+    "homework",
+    "rubrics",
+    "target-grade",
+    "grade-calculator",
+    "brightspace-grade-calculator"
   ],
   "maintainers": ["AnonymousOnyx22"]
 }
