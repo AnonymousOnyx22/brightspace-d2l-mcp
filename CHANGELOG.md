@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.8
+
+- Update the table of sibling MCP servers in the README
+- Add actionable errors for no courses in get_courses
+- Add actionable errors for empty results in get_whats_new
+- Add which tool to use table to README first screen
+- Tighten package.json description with student use cases
+- Add tags to glama.json matching npm keywords
+
 ## 1.4.7
 
 - Update the table of sibling MCP servers in the README
