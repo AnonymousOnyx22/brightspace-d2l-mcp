@@ -68,4 +68,22 @@ describe("get_whats_new", () => {
     expect(data.courses[0]).toMatchObject({ courseName: "Networking", unreadFeedback: null });
     expect(data.totals.newAnnouncements).toBe(1);
   });
+
+  it("tells the user to check their sign in when no courses come back", async () => {
+    const call = setup({ "/lp/enrollments": { Items: [] } });
+
+    const result = await call({});
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain("No courses came back from Brightspace");
+    expect(result.content[0].text).toContain("get_my_courses");
+  });
+
+  it("points at get_my_courses when the course id is not enrolled", async () => {
+    const call = setup({ "/lp/enrollments": enrollments });
+
+    const result = await call({ courseId: 999 });
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain("Course 999 is not one of your Brightspace courses");
+    expect(result.content[0].text).toContain("get_my_courses");
+  });
 });
