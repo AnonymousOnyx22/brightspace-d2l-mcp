@@ -325,4 +325,61 @@ describe("get_upcoming_due_dates course lookups", () => {
     expect(items).toHaveLength(1);
     expect(items[0].courseName).toBeNull();
   });
+
+  it("resolves a course name and queries only that course", async () => {
+    const { call, requested } = setup((path) => {
+      if (path.includes("/enrollments/")) return enrollments(COURSE_A, COURSE_B);
+      if (path.includes("/dropbox/folders/")) {
+        return [{ Id: 1, Name: "HW", DueDate: daysFromNow(1), IsHidden: false }];
+      }
+      return [];
+    });
+
+    const items = parse(await call({ daysAhead: 7, course: "MA 261" }));
+
+    expect(items).toHaveLength(1);
+    expect(items[0]).toMatchObject({ courseId: 202, courseName: "MA 261" });
+    expect(requested.some((p) => p.includes(`/${COURSE_A.Id}/`))).toBe(false);
+  });
+
+  it("resolves a course code without a space", async () => {
+    const { call } = setup((path) => {
+      if (path.includes("/enrollments/")) return enrollments(COURSE_A, COURSE_B);
+      if (path.includes("/quizzes/")) {
+        return [{ QuizId: 2, Name: "Q", StartDate: null, EndDate: null, DueDate: daysFromNow(2), IsActive: true }];
+      }
+      return [];
+    });
+
+    const items = parse(await call({ daysAhead: 7, course: "CS180" }));
+
+    expect(items).toHaveLength(1);
+    expect(items[0]).toMatchObject({ courseId: 101, courseName: "CS 180" });
+  });
+
+  it("names get_my_courses when the course does not match", async () => {
+    const { call, requested } = setup((path) => {
+      if (path.includes("/enrollments/")) return enrollments(COURSE_A);
+      return { Objects: [] };
+    });
+
+    const result = await call({ daysAhead: 7, course: "Chemistry" });
+
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain("Chemistry");
+    expect(result.content[0].text).toContain("get_my_courses");
+    expect(requested.some((p) => /dropbox|quizzes/.test(p))).toBe(false);
+  });
+
+  it("rejects both courseId and course", async () => {
+    const { call } = setup((path) => {
+      if (path.includes("/enrollments/")) return enrollments(COURSE_A);
+      return { Objects: [] };
+    });
+
+    const result = await call({ daysAhead: 7, courseId: COURSE_A.Id, course: "MA 261" });
+
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain("either courseId or course");
+  });
 });

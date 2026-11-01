@@ -14,6 +14,8 @@ export const GetMyCoursesSchema = z.object({
 export const GetUpcomingDueDatesSchema = z.object({
   daysAhead: z.coerce.number().int().min(1).max(90).default(7).describe("Number of days ahead to look for due dates"),
   courseId: z.coerce.number().int().positive().optional().describe("Filter to a specific course ID"),
+  course: z.string().trim().min(1).optional()
+    .describe("Course name or code to look up, for example \"CS 101\". Use this instead of courseId when you know the name."),
 });
 
 export const GetTodoSchema = z.object({
@@ -23,6 +25,8 @@ export const GetTodoSchema = z.object({
 
 export const GetMyGradesSchema = z.object({
   courseId: z.coerce.number().int().positive().optional().describe("Course ID to get grades for. If omitted, returns grades for all enrolled courses."),
+  course: z.string().trim().min(1).optional()
+    .describe("Course name or code to get grades for, for example \"CS 101\". Use this instead of courseId when you know the name."),
 });
 
 export const GetAnnouncementsSchema = z.object({

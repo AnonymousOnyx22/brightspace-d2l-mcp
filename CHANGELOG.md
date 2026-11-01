@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- `get_my_grades` and `get_upcoming_due_dates` accept a course name or code through the new `course` parameter, so you can ask about a class without looking up its ID first.
+
 ## 1.4.8
 
 - Update the table of sibling MCP servers in the README

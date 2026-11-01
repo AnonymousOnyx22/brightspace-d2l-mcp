@@ -8,6 +8,7 @@ import {
   COURSE_NOT_FOUND_HINT,
 } from "../api/errors.js";
 import { AuthRequiredError } from "../auth/authenticator.js";
+import { CourseRefAmbiguousError, CourseRefNotFoundError } from "../utils/course-ref.js";
 import { log } from "../utils/logger.js";
 import { SETUP_COMMAND } from "../utils/paths.js";
 import {
@@ -74,6 +75,10 @@ export function sanitizeError(error: unknown): CallToolResult {
 
   // Messages are written by this package, never copied from a remote response.
   if (error instanceof CourseNotFoundError || error instanceof NoCoursesError) {
+    return errorResponse(error.message);
+  }
+
+  if (error instanceof CourseRefNotFoundError || error instanceof CourseRefAmbiguousError) {
     return errorResponse(error.message);
   }
 

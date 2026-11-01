@@ -28,9 +28,9 @@ For any other app run npx brightspace-d2l-mcp config to print the MCP config JSO
 17 MCP tools. None of them change anything in Brightspace.
 
 - get_todo gives a prioritized to-do list across every course with what is due soon, overdue, not open yet and already done
-- get_upcoming_due_dates gives upcoming deadlines with the real submission status of each assignment
+- get_upcoming_due_dates gives upcoming deadlines with the real submission status of each assignment, and accepts a course name or code
 - get_my_courses lists enrolled courses with names, codes and ids
-- get_my_grades gives the grade breakdown per course with points, percentages and instructor comments
+- get_my_grades gives the grade breakdown per course with points, percentages and instructor comments, and accepts a course name or code
 - get_assignments lists assignments and quizzes with due dates, status and rubrics
 - get_assignment_files reads the instructions, handouts and rubric files attached to an assignment
 - get_course_content lists course modules, lecture slides, files and links

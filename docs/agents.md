@@ -324,9 +324,9 @@ npx brightspace-d2l-mcp serve --http [--port 8787] [--host 127.0.0.1] [--no-auth
 | Tool | What it returns |
 |---|---|
 | `get_todo` | Prioritized list: do now, overdue, not open yet, check yourself, already done |
-| `get_upcoming_due_dates` | Due dates across courses, each with submission status |
+| `get_upcoming_due_dates` | Due dates across courses, each with submission status; filter by course name, code or ID |
 | `get_assignments` | Assignments and quizzes with instructions, rubrics, submission status and feedback |
-| `get_my_grades` | Grades for one course or all courses |
+| `get_my_grades` | Grades for one course or all courses, by course name, code or ID |
 | `get_my_courses` | Enrolled courses |
 | `get_announcements` | Recent announcements |
 | `get_course_content` | Modules and topics |

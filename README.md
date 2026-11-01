@@ -169,9 +169,9 @@ This one checks your actual submission for every assignment:
 | Tool | What it does |
 |---|---|
 | `get_todo` | Prioritized to-do list across every course: what's due soon, overdue, not open yet, and already done |
-| `get_upcoming_due_dates` | Upcoming deadlines with the real submission status of each assignment |
+| `get_upcoming_due_dates` | Upcoming deadlines with the real submission status of each assignment, for all courses or one course by name or code |
 | `get_my_courses` | Your enrolled courses with names, codes and ids |
-| `get_my_grades` | Grade breakdown per course with points, percentages and instructor comments |
+| `get_my_grades` | Grade breakdown per course with points, percentages and instructor comments, for all courses or one course by name or code |
 | `get_assignments` | Assignments (dropboxes) and quizzes with due dates, status and rubrics |
 | `get_assignment_files` | Reads the instructions, handouts and rubric files attached to an assignment |
 | `get_course_content` | Course modules, lecture slides, files and links |

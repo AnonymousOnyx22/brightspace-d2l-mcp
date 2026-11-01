@@ -3,7 +3,7 @@ import { D2LApiClient, DEFAULT_CACHE_TTLS } from "../api/index.js";
 import { CourseNotFoundError, NoCoursesError } from "../api/errors.js";
 import { fetchAllItems } from "../api/paginate.js";
 import { GetUpcomingDueDatesSchema } from "./schemas.js";
-import { toolResponse, sanitizeError } from "./tool-helpers.js";
+import { toolResponse, errorResponse, sanitizeError, resolveCourseRef } from "./tool-helpers.js";
 import { log } from "../utils/logger.js";
 import { applyCourseFilter } from "../utils/course-filter.js";
 import { assignmentUrl, quizUrl } from "../utils/deep-links.js";
@@ -56,7 +56,7 @@ function unwrapList<T>(raw: unknown): T[] {
   return Array.isArray(raw) ? (raw as T[]) : ((raw as { Objects?: T[] })?.Objects ?? []);
 }
 
-export async function resolveCourses(apiClient: D2LApiClient, config: AppConfig, courseId?: number): Promise<CourseRef[]> {
+export async function resolveCourses(apiClient: D2LApiClient, config: AppConfig, courseId?: number, course?: string): Promise<CourseRef[]> {
   let items: EnrollmentItem[] = [];
   let enrollmentsLoaded = false;
   try {
@@ -69,6 +69,19 @@ export async function resolveCourses(apiClient: D2LApiClient, config: AppConfig,
   } catch (error) {
     if (!courseId) throw error;
     log("DEBUG", "due dates: could not fetch enrollments for course name", error);
+  }
+
+  // A course name or code is resolved against the enrollment list.
+  if (course) {
+    const match = resolveCourseRef(
+      course,
+      items.map((item) => ({
+        id: item.OrgUnit.Id,
+        name: item.OrgUnit.Name,
+        code: item.OrgUnit.Code,
+      }))
+    );
+    return [{ id: match.id, name: match.name ?? null }];
   }
 
   if (courseId) {
@@ -151,11 +164,12 @@ export interface CollectOptions {
   fromMs: number;
   toMs: number;
   courseId?: number;
+  course?: string;
 }
 
 export async function collectDueItems(apiClient: D2LApiClient, config: AppConfig, options: CollectOptions): Promise<DueItem[]> {
   const now = Date.now();
-  const courses = await resolveCourses(apiClient, config, options.courseId);
+  const courses = await resolveCourses(apiClient, config, options.courseId, options.course);
   const results = await Promise.allSettled(courses.map((course) => fetchCourseDueItems(apiClient, config.baseUrl, course)));
   const items = results.flatMap((result) => {
     if (result.status === "fulfilled") return result.value;
@@ -194,15 +208,19 @@ export function registerGetUpcomingDueDates(server: McpServer, apiClient: D2LApi
         "Upcoming due dates across all courses, with whether each assignment is already submitted " +
         "(submissionStatus: submitted, graded, draft, not_submitted, not_open_yet, closed, past_due, restricted, unknown). " +
         "Dates are UTC ISO strings; convert to the user's local time. Use for deadlines, what's due and date ranges, " +
-        "in date order. For advice on what to do first, use get_todo instead. " +
+        "in date order. Pass course with a name or code to filter without looking up an ID. " +
+        "For advice on what to do first, use get_todo instead. " +
         "Example: \"What's due next week?\"",
       inputSchema: GetUpcomingDueDatesSchema,
       annotations: { readOnlyHint: true, openWorldHint: true },
     },
     async (args: unknown) => {
       try {
-        const { daysAhead, courseId } = GetUpcomingDueDatesSchema.parse(args);
-        const upcoming = await collectDueItems(apiClient, config, { fromMs: 0, toMs: daysAhead * 86_400_000, courseId });
+        const { daysAhead, courseId, course } = GetUpcomingDueDatesSchema.parse(args);
+        if (courseId && course) {
+          return errorResponse("Pass either courseId or course, not both.");
+        }
+        const upcoming = await collectDueItems(apiClient, config, { fromMs: 0, toMs: daysAhead * 86_400_000, courseId, course });
         log("INFO", `get_upcoming_due_dates: ${upcoming.length} items`);
         return toolResponse(upcoming);
       } catch (error) {

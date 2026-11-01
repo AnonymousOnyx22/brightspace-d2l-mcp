@@ -4,7 +4,7 @@ import { D2LApiClient, DEFAULT_CACHE_TTLS } from "../api/index.js";
 import {
   GetMyGradesSchema,
 } from "./schemas.js";
-import { toolResponse, sanitizeError } from "./tool-helpers.js";
+import { toolResponse, errorResponse, sanitizeError, resolveCourseRef } from "./tool-helpers.js";
 import { log } from "../utils/logger.js";
 import { applyCourseFilter } from "../utils/course-filter.js";
 import type { AppConfig } from "../types/index.js";
@@ -55,7 +55,9 @@ export function registerGetMyGrades(
     {
       title: "Get My Grades",
       description:
-        "Fetch your grade breakdown for a specific course or all enrolled courses in D2L Brightspace. Shows grade items (grade columns) with points, percentages, and comments. Use this when the user asks about grades, grade items, grade item, scores, marks, GPA, academic performance, or how they're doing in a class in Brightspace or D2L. Example: \"What's my current grade in Calculus?\"",
+        "Fetch your grade breakdown for a specific course or all enrolled courses in D2L Brightspace. Shows grade items (grade columns) with points, percentages, and comments. " +
+        "Pass course with a name or code when you know it, or courseId when you have the ID. " +
+        "Use this when the user asks about grades, grade items, grade item, scores, marks, GPA, academic performance, or how they're doing in a class in Brightspace or D2L. Example: \"What's my current grade in Calculus?\"",
       inputSchema: GetMyGradesSchema,
       annotations: { readOnlyHint: true, openWorldHint: true },
     },
@@ -64,11 +66,37 @@ export function registerGetMyGrades(
         log("DEBUG", "get_my_grades tool called", { args });
 
         // Parse and validate input
-        const { courseId } = GetMyGradesSchema.parse(args);
+        const { courseId, course } = GetMyGradesSchema.parse(args);
+
+        if (courseId && course) {
+          return errorResponse("Pass either courseId or course, not both.");
+        }
+
+        const enrollmentPath = apiClient.lp(
+          "/enrollments/myenrollments/?orgUnitTypeId=3&isActive=true"
+        );
+
+        // A course name or code needs the enrollment list to find its id.
+        let targetCourseId = courseId;
+        if (course) {
+          const enrollmentResponse = await apiClient.get<EnrollmentResponse>(
+            enrollmentPath,
+            { ttl: DEFAULT_CACHE_TTLS.enrollments }
+          );
+          const resolved = resolveCourseRef(
+            course,
+            enrollmentResponse.Items.map((item) => ({
+              id: item.OrgUnit.Id,
+              name: item.OrgUnit.Name,
+              code: item.OrgUnit.Code,
+            }))
+          );
+          targetCourseId = resolved.id;
+        }
 
         // Single course case
-        if (courseId) {
-          const path = apiClient.le(courseId, "/grades/values/myGradeValues/");
+        if (targetCourseId) {
+          const path = apiClient.le(targetCourseId, "/grades/values/myGradeValues/");
           const gradeValues = await apiClient.get<GradeValue[]>(path, {
             ttl: DEFAULT_CACHE_TTLS.grades,
           });
@@ -85,15 +113,12 @@ export function registerGetMyGrades(
             lastModified: gv.LastModified,
           }));
 
-          log("INFO", `get_my_grades: Retrieved ${grades.length} grade items for course ${courseId}`);
-          return toolResponse({ courseId, grades });
+          log("INFO", `get_my_grades: Retrieved ${grades.length} grade items for course ${targetCourseId}`);
+          return toolResponse({ courseId: targetCourseId, grades });
         }
 
         // All courses case
         // First, fetch enrolled courses
-        const enrollmentPath = apiClient.lp(
-          "/enrollments/myenrollments/?orgUnitTypeId=3&isActive=true"
-        );
         const enrollmentResponse = await apiClient.get<EnrollmentResponse>(
           enrollmentPath,
           { ttl: DEFAULT_CACHE_TTLS.enrollments }
