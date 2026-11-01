@@ -165,6 +165,26 @@ describe("get_my_grades more lookups", () => {
     expect(data.courses.map((c: any) => c.courseId)).toEqual([COURSE_B.Id]);
   });
 
+  it("explains empty grades for one course and points to get_assignments", async () => {
+    const { call } = setup(() => []);
+
+    const result = await call({ courseId: COURSE_A.Id });
+
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain("hidden");
+    expect(result.content[0].text).toContain("get_assignments");
+  });
+
+  it("explains empty grades when every course is empty", async () => {
+    const { call } = setup((path) => (path.includes("/enrollments/") ? enrollments(COURSE_A, COURSE_B) : []));
+
+    const result = await call({});
+
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain("2 course(s)");
+    expect(result.content[0].text).toContain("get_assignments");
+  });
+
   it("leaves out courses on the exclude list", async () => {
     const config = makeConfig();
     config.courseFilter = { activeOnly: true, excludeCourseIds: [COURSE_A.Id] };

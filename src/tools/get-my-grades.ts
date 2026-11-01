@@ -45,6 +45,25 @@ interface EnrollmentResponse {
   };
 }
 
+const NO_GRADES_CAUSE =
+  "The most likely cause is that the instructor has hidden the grades or has not released them yet.";
+
+// Says why the list is empty and points at get_assignments, so the caller
+// does not read an empty list as a failure.
+export function emptyGradesMessage(courseId: number): string {
+  return (
+    `No grades are visible for course ${courseId}. ${NO_GRADES_CAUSE} ` +
+    "Call `get_assignments` for this course to see what is due and what has been submitted."
+  );
+}
+
+export function emptyAllGradesMessage(searched: number): string {
+  return (
+    `No grades are visible in any of the ${searched} course(s) searched. ${NO_GRADES_CAUSE} ` +
+    "Call `get_assignments` to see what is due and what has been submitted."
+  );
+}
+
 export function registerGetMyGrades(
   server: McpServer,
   apiClient: D2LApiClient,
@@ -114,6 +133,9 @@ export function registerGetMyGrades(
           }));
 
           log("INFO", `get_my_grades: Retrieved ${grades.length} grade items for course ${targetCourseId}`);
+          if (grades.length === 0) {
+            return errorResponse(emptyGradesMessage(targetCourseId));
+          }
           return toolResponse({ courseId: targetCourseId, grades });
         }
 
@@ -189,6 +211,9 @@ export function registerGetMyGrades(
           "INFO",
           `get_my_grades: Retrieved grades for ${courses.length} courses (out of ${enrollmentResponse.Items.length} enrolled)`
         );
+        if (courses.length > 0 && courses.every((c) => c.grades.length === 0)) {
+          return errorResponse(emptyAllGradesMessage(courses.length));
+        }
         return toolResponse({ courses });
       } catch (error) {
         return sanitizeError(error);
