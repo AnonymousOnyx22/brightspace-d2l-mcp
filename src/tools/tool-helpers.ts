@@ -16,6 +16,18 @@ import {
   type DownloadFailureKind,
 } from "../utils/download-errors.js";
 
+// Course tools take a numeric id, so this shared helper turns a name or code
+// into the matching course from an enrollment list.
+export {
+  resolveCourseRef,
+  findCourseRefs,
+  CourseRefNotFoundError,
+  CourseRefAmbiguousError,
+  type CourseIdentity,
+  type CourseRefMatch,
+  type CourseRefMatchKind,
+} from "../utils/course-ref.js";
+
 export function toolResponse(data: unknown): CallToolResult {
   return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
 }
