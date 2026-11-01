@@ -3,7 +3,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { fetchSubmissionStatus } from "./submission-status.js";
 import { D2LApiClient, DEFAULT_CACHE_TTLS } from "../api/index.js";
 import { GetAssignmentsSchema } from "./schemas.js";
-import { toolResponse, sanitizeError } from "./tool-helpers.js";
+import { toolResponse, errorResponse, sanitizeError } from "./tool-helpers.js";
 import { convertHtmlToMarkdown } from "../utils/html-converter.js";
 import { log } from "../utils/logger.js";
 import { applyCourseFilter } from "../utils/course-filter.js";
@@ -468,6 +468,25 @@ function gradebookHeadsUp(
   return rows;
 }
 
+const NO_ASSIGNMENTS_CAUSE =
+  "The most likely cause is that the instructor has not posted any assignments or quizzes yet.";
+
+// Names the course that was searched, gives the likely cause and points at
+// get_my_courses, so the caller can recover without guessing.
+export function emptyAssignmentsMessage(courseId: number): string {
+  return (
+    `No assignments or quizzes were found for course ${courseId}. ${NO_ASSIGNMENTS_CAUSE} ` +
+    "Call `get_my_courses` to confirm this is the right course ID, then retry."
+  );
+}
+
+export function emptyAllCoursesMessage(searched: number): string {
+  return (
+    `No assignments or quizzes were found in any of the ${searched} course(s) searched. ${NO_ASSIGNMENTS_CAUSE} ` +
+    "Call `get_my_courses` to see which courses were searched, then retry with a specific courseId."
+  );
+}
+
 export function registerGetAssignments(
   server: McpServer,
   apiClient: D2LApiClient,
@@ -494,6 +513,9 @@ export function registerGetAssignments(
           const assignments = await fetchCourseAssignments(apiClient, courseId, config.baseUrl);
 
           log("INFO", `get_assignments: Retrieved ${assignments.length} assignments for course ${courseId}`);
+          if (assignments.length === 0) {
+            return errorResponse(emptyAssignmentsMessage(courseId));
+          }
           return toolResponse({ courseId, assignments });
         }
 
@@ -555,6 +577,9 @@ export function registerGetAssignments(
           "INFO",
           `get_assignments: Retrieved assignments for ${courses.length} courses (out of ${enrollmentResponse.Items.length} enrolled)`
         );
+        if (courses.length > 0 && courses.every((c) => c.assignments.length === 0)) {
+          return errorResponse(emptyAllCoursesMessage(courses.length));
+        }
         return toolResponse({ courses });
       } catch (error) {
         // Temporary: log full error details to stderr for debugging

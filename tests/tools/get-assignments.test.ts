@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { fetchCourseAssignments } from "../../src/tools/get-assignments.js";
+import { fetchCourseAssignments, registerGetAssignments } from "../../src/tools/get-assignments.js";
 
 /**
  * fetchCourseAssignments takes baseUrl as an optional trailing argument so the
@@ -310,5 +310,43 @@ describe("fetchCourseAssignments quiz mapping", () => {
     expect(quiz.attemptsRemaining).toBe(1);
     expect(quiz.bestScore).toBe(17);
     expect(quiz.attemptWarning).toBe("WARNING: Only 1 attempt remaining");
+  });
+});
+
+describe("get_assignments empty results", () => {
+  function setup(enrollments: any) {
+    const apiClient = {
+      lp: (p: string) => `/d2l/api/lp/1.0${p}`,
+      le: (orgUnitId: number, p: string) => `/d2l/api/le/1.0/${orgUnitId}${p}`,
+      get: vi.fn(async (path: string) => {
+        if (path.includes("/enrollments/")) return enrollments;
+        if (path.endsWith("/dropbox/folders/")) return [];
+        if (path.endsWith("/quizzes/")) return { Objects: [] };
+        throw notFound();
+      }),
+    };
+    let handler: (args: unknown) => Promise<any>;
+    const server = { registerTool: (_n: string, _m: unknown, fn: any) => { handler = fn; } };
+    registerGetAssignments(server as any, apiClient as any, { baseUrl: BASE, courseFilter: { activeOnly: true } } as any);
+    return (args: unknown) => handler!(args);
+  }
+
+  it("names the course, the cause and get_my_courses for one course", async () => {
+    const result = await setup({ Items: [] })({ courseId: 101 });
+    expect(result.isError).toBe(true);
+    const text = result.content[0].text;
+    expect(text).toContain("course 101");
+    expect(text).toContain("not posted any assignments");
+    expect(text).toContain("get_my_courses");
+  });
+
+  it("returns an actionable error when every course is empty", async () => {
+    const enrollments = {
+      Items: [{ OrgUnit: { Id: 7, Name: "Math", Code: "M1" }, Access: { IsActive: true, CanAccess: true } }],
+    };
+    const result = await setup(enrollments)({});
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain("1 course(s) searched");
+    expect(result.content[0].text).toContain("get_my_courses");
   });
 });
