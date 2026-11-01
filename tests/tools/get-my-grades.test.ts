@@ -115,3 +115,63 @@ describe("get_my_grades course name lookup", () => {
     expect(result.content[0].text).toContain("either courseId or course");
   });
 });
+
+describe("get_my_grades more lookups", () => {
+  it("matches a partial course name", async () => {
+    const { call } = setup(respondWithGrades);
+
+    const data = parse(await call({ course: "ma 2" }));
+
+    expect(data.courseId).toBe(COURSE_B.Id);
+  });
+
+  it("asks for a course ID when the name matches two courses", async () => {
+    const { call, requested } = setup((path) =>
+      path.includes("/enrollments/")
+        ? enrollments(
+            { Id: 1, Name: "Biology I", Code: "BIO100" },
+            { Id: 2, Name: "Biology II", Code: "BIO200" }
+          )
+        : [GRADE]
+    );
+
+    const result = await call({ course: "Biology" });
+
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain("more than one course");
+    expect(result.content[0].text).toContain("Biology II");
+    expect(requested.some((p) => p.includes("/grades/"))).toBe(false);
+  });
+
+  it("returns every course when no course is given", async () => {
+    const { call } = setup(respondWithGrades);
+
+    const data = parse(await call({}));
+
+    expect(data.courses.map((c: any) => c.courseId)).toEqual([COURSE_A.Id, COURSE_B.Id]);
+    expect(data.courses[0]).toMatchObject({ courseName: "CS 180" });
+    expect(data.courses[0].grades[0].name).toBe("Homework 1");
+  });
+
+  it("skips a course that answers 403", async () => {
+    const { call } = setup((path) => {
+      if (path.includes("/enrollments/")) return enrollments(COURSE_A, COURSE_B);
+      if (path.includes(`/${COURSE_A.Id}/`)) throw Object.assign(new Error("forbidden"), { status: 403 });
+      return [GRADE];
+    });
+
+    const data = parse(await call({}));
+
+    expect(data.courses.map((c: any) => c.courseId)).toEqual([COURSE_B.Id]);
+  });
+
+  it("leaves out courses on the exclude list", async () => {
+    const config = makeConfig();
+    config.courseFilter = { activeOnly: true, excludeCourseIds: [COURSE_A.Id] };
+    const { call } = setup(respondWithGrades, config);
+
+    const data = parse(await call({}));
+
+    expect(data.courses.map((c: any) => c.courseId)).toEqual([COURSE_B.Id]);
+  });
+});
