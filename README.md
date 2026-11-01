@@ -402,6 +402,24 @@ No. It's read-only on purpose.
 </details>
 
 <details>
+<summary><b>Is Brightspace the same as D2L or Desire2Learn?</b></summary>
+
+Yes. D2L, short for Desire2Learn, is the company, and Brightspace is its learning platform. Schools use the names loosely, and older school addresses often end in `desire2learn.com`. This server works with all of them.
+</details>
+
+<details>
+<summary><b>Does it work with Brightspace Pulse?</b></summary>
+
+Not directly. Brightspace Pulse is D2L's student mobile app, and this server does not connect to it or to any phone. It reads the same courses, due dates and grades from your school's Brightspace site on your computer, so you can ask your AI app about what Pulse would show you.
+</details>
+
+<details>
+<summary><b>Is it read only? Can it change my grades or my work?</b></summary>
+
+It is read only. It can look at your courses, grades, files and class lists, but it cannot submit work, post to a discussion, edit anything or change a grade. See [how read only is enforced](SECURITY.md#how-read-only-is-enforced).
+</details>
+
+<details>
 <summary><b>Is this made by D2L?</b></summary>
 
 No. It's an independent open-source project that uses the official Brightspace API with your own sign-in. It isn't affiliated with or endorsed by D2L.

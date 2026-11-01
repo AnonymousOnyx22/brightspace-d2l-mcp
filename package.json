@@ -82,6 +82,7 @@
     "rubrics",
     "target-grade",
     "grade-calculator",
-    "brightspace-grade-calculator"
+    "brightspace-grade-calculator",
+    "brightspace pulse"
   ]
 }
