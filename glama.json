@@ -1,6 +1,6 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/server.json",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "description": "Brightspace MCP server for D2L: connect Brightspace to Claude Desktop, Claude Code, Cursor, VS Code and Windsurf, with due dates, submission status, grades and course files.",
   "tools": [
     "get_todo",

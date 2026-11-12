@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.4.9
 
 - `get_my_grades` and `get_upcoming_due_dates` accept a course name or code through the new `course` parameter, so you can ask about a class without looking up its ID first.
 - `get_assignments` and `get_announcements` accept the same `course` parameter.
