@@ -3,6 +3,7 @@
 ## Unreleased
 
 - `get_my_grades` and `get_upcoming_due_dates` accept a course name or code through the new `course` parameter, so you can ask about a class without looking up its ID first.
+- `get_assignments` and `get_announcements` accept the same `course` parameter.
 - `get_assignments` now returns a clear error when a course has no assignments or quizzes. It names the course, says the likely cause and points to `get_my_courses`.
 - `get_my_grades` now returns a clear error when no grades are visible. It says the grades may be hidden or not released yet and points to `get_assignments`.
 

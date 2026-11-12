@@ -31,12 +31,16 @@ export const GetMyGradesSchema = z.object({
 
 export const GetAnnouncementsSchema = z.object({
   courseId: z.coerce.number().int().positive().optional().describe("Course ID to get announcements for. If omitted, returns recent announcements across all courses."),
+  course: z.string().trim().min(1).optional()
+    .describe("Course name or code to get announcements for, for example \"CS 101\". Use this instead of courseId when you know the name."),
   count: z.coerce.number().int().min(1).max(50).default(10).describe("Maximum number of announcements to return"),
 });
 
 export const GetAssignmentsSchema = z.object({
   courseId: z.coerce.number().int().positive().optional()
     .describe("Course ID to get assignments for. If omitted, returns assignments for all enrolled courses."),
+  course: z.string().trim().min(1).optional()
+    .describe("Course name or code to get assignments for, for example \"CS 101\". Use this instead of courseId when you know the name."),
 });
 
 export const GetCourseContentSchema = z.object({

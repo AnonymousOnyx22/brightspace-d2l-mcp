@@ -4,7 +4,7 @@ import { D2LApiClient, DEFAULT_CACHE_TTLS } from "../api/index.js";
 import {
   GetAnnouncementsSchema,
 } from "./schemas.js";
-import { toolResponse, sanitizeError } from "./tool-helpers.js";
+import { toolResponse, errorResponse, sanitizeError, resolveCourseRef } from "./tool-helpers.js";
 import { log } from "../utils/logger.js";
 import { applyCourseFilter } from "../utils/course-filter.js";
 import type { AppConfig } from "../types/index.js";
@@ -93,7 +93,7 @@ export function registerGetAnnouncements(
     {
       title: "Get Announcements",
       description:
-        "Fetch recent announcements (news items) from your courses in D2L Brightspace. Can filter to a specific course or get announcements across all courses. Use this when the user asks about announcements, news, news items, updates from instructors, recent posts, or what professors said in Brightspace or D2L. Example: \"Did my professors post anything new?\"",
+        "Fetch recent announcements (news items) from your courses in D2L Brightspace. Can filter to a specific course or get announcements across all courses. Pass course with a name or code when you know it, or courseId when you have the ID. Use this when the user asks about announcements, news, news items, updates from instructors, recent posts, or what professors said in Brightspace or D2L. Example: \"Did my professors post anything new?\"",
       inputSchema: GetAnnouncementsSchema,
       annotations: { readOnlyHint: true, openWorldHint: true },
     },
@@ -102,7 +102,31 @@ export function registerGetAnnouncements(
         log("DEBUG", "get_announcements tool called", { args });
 
         // Parse and validate input
-        const { courseId, count } = GetAnnouncementsSchema.parse(args);
+        const { courseId: givenCourseId, course, count } = GetAnnouncementsSchema.parse(args);
+
+        if (givenCourseId && course) {
+          return errorResponse("Pass either courseId or course, not both.");
+        }
+
+        const enrollmentPath = apiClient.lp(
+          "/enrollments/myenrollments/?orgUnitTypeId=3&isActive=true"
+        );
+
+        // A course name or code needs the enrollment list to find its id.
+        let courseId = givenCourseId;
+        if (course) {
+          const lookup = await apiClient.get<EnrollmentResponse>(enrollmentPath, {
+            ttl: DEFAULT_CACHE_TTLS.enrollments,
+          });
+          courseId = resolveCourseRef(
+            course,
+            lookup.Items.map((item) => ({
+              id: item.OrgUnit.Id,
+              name: item.OrgUnit.Name,
+              code: item.OrgUnit.Code,
+            }))
+          ).id;
+        }
 
         // Single course case
         if (courseId) {
@@ -127,9 +151,6 @@ export function registerGetAnnouncements(
 
         // All courses case
         // First, fetch enrolled courses
-        const enrollmentPath = apiClient.lp(
-          "/enrollments/myenrollments/?orgUnitTypeId=3&isActive=true"
-        );
         const enrollmentResponse = await apiClient.get<EnrollmentResponse>(
           enrollmentPath,
           { ttl: DEFAULT_CACHE_TTLS.enrollments }

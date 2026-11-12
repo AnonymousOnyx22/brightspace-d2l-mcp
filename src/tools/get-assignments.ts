@@ -3,7 +3,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { fetchSubmissionStatus } from "./submission-status.js";
 import { D2LApiClient, DEFAULT_CACHE_TTLS } from "../api/index.js";
 import { GetAssignmentsSchema } from "./schemas.js";
-import { toolResponse, errorResponse, sanitizeError } from "./tool-helpers.js";
+import { toolResponse, errorResponse, sanitizeError, resolveCourseRef } from "./tool-helpers.js";
 import { convertHtmlToMarkdown } from "../utils/html-converter.js";
 import { log } from "../utils/logger.js";
 import { applyCourseFilter } from "../utils/course-filter.js";
@@ -497,7 +497,7 @@ export function registerGetAssignments(
     {
       title: "Get Assignments",
       description:
-        "Fetch assignments and quizzes for a specific course or all enrolled courses in D2L Brightspace. Shows dropbox (assignment) submissions and quizzes with due dates, status, and rubric info. Use this when the user asks about assignments, homework, dropboxes, dropbox folders, what to submit, quizzes, or assignment details and rubrics in Brightspace or D2L. This is not get_assignment_files: it lists assignments and their status, it does not read the instruction PDFs or handouts attached to them. Example: \"What assignments do I have in Calculus this week?\"",
+        "Fetch assignments and quizzes for a specific course or all enrolled courses in D2L Brightspace. Shows dropbox (assignment) submissions and quizzes with due dates, status, and rubric info. Use this when the user asks about assignments, homework, dropboxes, dropbox folders, what to submit, quizzes, or assignment details and rubrics in Brightspace or D2L. Pass course with a name or code when you know it, or courseId when you have the ID. This is not get_assignment_files: it lists assignments and their status, it does not read the instruction PDFs or handouts attached to them. Example: \"What assignments do I have in Calculus this week?\"",
       inputSchema: GetAssignmentsSchema,
       annotations: { readOnlyHint: true, openWorldHint: true },
     },
@@ -506,7 +506,31 @@ export function registerGetAssignments(
         log("DEBUG", "get_assignments tool called", { args });
 
         // Parse and validate input
-        const { courseId } = GetAssignmentsSchema.parse(args);
+        const { courseId: givenCourseId, course } = GetAssignmentsSchema.parse(args);
+
+        if (givenCourseId && course) {
+          return errorResponse("Pass either courseId or course, not both.");
+        }
+
+        const enrollmentPath = apiClient.lp(
+          "/enrollments/myenrollments/?orgUnitTypeId=3&isActive=true"
+        );
+
+        // A course name or code needs the enrollment list to find its id.
+        let courseId = givenCourseId;
+        if (course) {
+          const lookup = await apiClient.get<EnrollmentResponse>(enrollmentPath, {
+            ttl: DEFAULT_CACHE_TTLS.enrollments,
+          });
+          courseId = resolveCourseRef(
+            course,
+            lookup.Items.map((item) => ({
+              id: item.OrgUnit.Id,
+              name: item.OrgUnit.Name,
+              code: item.OrgUnit.Code,
+            }))
+          ).id;
+        }
 
         // Single course case
         if (courseId) {
@@ -521,9 +545,6 @@ export function registerGetAssignments(
 
         // All courses case
         // First, fetch enrolled courses
-        const enrollmentPath = apiClient.lp(
-          "/enrollments/myenrollments/?orgUnitTypeId=3&isActive=true"
-        );
         const enrollmentResponse = await apiClient.get<EnrollmentResponse>(
           enrollmentPath,
           { ttl: DEFAULT_CACHE_TTLS.enrollments }
